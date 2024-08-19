@@ -1,0 +1,115 @@
+main {
+    background-color: #5B1994;
+    display: flex;
+    height: 100vh;
+}
+
+.main_content {
+    background-color: #F3F3F3;
+    max-width: 479px;
+    width: 100%;
+    border-radius: 0rem 1rem 1rem 0;
+    box-shadow: 7px -1px 12px -3px rgba(0,0,0,0.40);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title {
+    margin: 37px 22px 0 22px;  
+    display: flex;
+    gap: 8px;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+section > header > h2 {
+    margin-bottom: 32px;
+    font-weight: 600;
+}
+
+#logo {
+    width: 61px;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 2.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: #D9D9D9;
+    min-width: 398px;
+}
+
+label[for="senha"] {
+    margin-top: 1rem;
+} 
+
+.other_options {
+    margin: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.other_options > a {
+    text-decoration: none;
+    color: #633CE0;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #BC8FF3;
+    max-width: 118px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: auto;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+#img_astronauta {
+    margin: auto;
+    height: 618px;
+}
+
+@media (max-width: 1150px) {
+    main {
+        justify-content: center; 
+        align-items: center;     
+    }
+
+    section > header > h2 {
+        margin-top: 2rem;
+    }
+
+    #img_astronauta {
+        display: none;
+    }
+
+    .main_content {
+        margin: 0 auto;
+        border-radius: 1rem;
+        padding-bottom: 2rem;
+    }
+}
