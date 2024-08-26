@@ -1,0 +1,148 @@
+body {
+  background-image: url("../img/sky.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: var(--cor-texto);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.main_content {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.7px);
+  -webkit-backdrop-filter: blur(6.7px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 480px;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+#logo {
+  width: 60px;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: var(--cor-texto);
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+  color: var(--cor-texto);
+}
+
+label {
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--cor-texto);
+}
+
+input {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--cor-texto);
+  width: 100%;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+}
+
+#recupera_senha {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--cor-destaque);
+  text-decoration: none;
+}
+
+button {
+  padding: 0.75rem;
+  border: none;
+  background-color: var(--cor-destaque);
+  color: var(--cor-background-primario);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+}
+
+button:hover {
+  background-color: var(--cor-texto);
+  color: var(--cor-background-primario);
+}
+
+.other_options {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.other_options a {
+  text-decoration: none;
+  color: var(--cor-destaque);
+  font-weight: bold;
+}
+
+#img_astronauta {
+  height: 600px;
+  margin-left: 2rem;
+}
+
+@media (max-width: 1150px) {
+  main {
+    flex-direction: column;
+  }
+
+  #img_astronauta {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .main_content {
+    padding: 1.5rem;
+  }
+
+  input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+}

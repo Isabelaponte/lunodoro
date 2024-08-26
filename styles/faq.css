@@ -1,0 +1,149 @@
+* {
+    color: var(--cor-texto);
+    line-height: 1.75;
+  }
+  
+  body {
+    background-image: url("../img/sky.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: var(--cor-texto);
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  main {
+    max-width: 620px;
+    margin: 3.5rem auto;
+    padding: 0 12px;
+    background: rgba(0, 0, 0, 0.21);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.7px);
+    -webkit-backdrop-filter: blur(6.7px);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    padding: 20px;
+  }
+  
+  h1,
+  h2 {
+    color: var(--cor-texto);
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h2::after {
+    content: "";
+    display: block;
+    width: 24px;
+    padding-top: 8px;
+    border-bottom: 4px solid var(--cor-destaque);
+    opacity: 0.6;
+  }
+  
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 4rem;
+  }
+  
+  strong {
+    font-weight: 600;
+  }
+  
+  p {
+    padding-left: 1rem;
+  }
+  
+  ol,
+  ul {
+    padding-left: 2.5rem;
+  }
+  
+  li {
+    margin: 1rem 0;
+  }
+  
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--cor-destaque);
+  }
+  
+  .header_FAQ {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    flex-wrap: wrap;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon > h1 {
+    font-weight: bold;
+    color: var(--cor-texto);
+    font-size: 24pt;
+    margin-left: 10px;
+  }
+  
+  #logo {
+    width: 40px;
+    margin-right: 10px;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  nav > a {
+    color: var(--cor-texto);
+    text-decoration: none;
+    padding: 10px;
+    margin: 0px 5rem;
+    font-weight: bold;
+    font-size: larger;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  nav > a:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .login {
+    padding: 10px;
+    background-color: var(--cor-texto);
+    color: var(--cor-background-primario);
+    border-radius: 10px;
+    width: 5rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  
+  .login:hover {
+    color: var(--cor-texto);
+    background-color: var(--cor-background-primario);
+  }
+  
