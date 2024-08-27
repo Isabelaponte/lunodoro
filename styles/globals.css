@@ -9,12 +9,14 @@
 }
 
 :root{
-    --cor-background-primario: #5b1994;
+    /* --cor-background-primario: #5b1994; */
+    --cor-background-primario: #1c3166;
     --cor-backgound-secundario: #bc8ff3;
     --cor-backgound-inputText: #d9d9d9;
     --cor-texto: #f5f5f5;
     --cor-link: #633ce0;
-    --cor-destaque: #e03b7f;
+    /* --cor-destaque: #e03b7f; */
+    --cor-destaque: rgb(198, 174, 228);
 }
 
 h1::selection,

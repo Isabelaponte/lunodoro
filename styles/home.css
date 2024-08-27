@@ -1,5 +1,6 @@
 body {
-  background-image: url("../img/sky.jpg");
+  /* background-image: url("../img/sky.jpg"); */
+  background-color: var(--cor-background-primario);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
