@@ -25,7 +25,7 @@ header {
   align-items: center;
 }
 
-.icon > h1 {
+.icon>h1 {
   font-weight: bold;
   color: var(--cor-texto);
   font-size: 24pt;
@@ -45,7 +45,7 @@ nav {
   gap: 10px;
 }
 
-nav > a {
+nav>a {
   color: var(--cor-texto);
   text-decoration: none;
   padding: 10px;
@@ -56,7 +56,7 @@ nav > a {
   transition: background 0.3s ease;
 }
 
-nav > a:hover {
+nav>a:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -83,10 +83,9 @@ nav > a:hover {
 main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  margin: 3.5rem auto;
   height: 70vh;
-  padding: 20px;
+  padding: 20px 100px;
 }
 
 .glass {
@@ -124,7 +123,7 @@ main {
     padding: 10px 20px;
   }
 
-  .icon > h1 {
+  .icon>h1 {
     font-size: 18pt;
   }
 
@@ -132,7 +131,7 @@ main {
     width: 30px;
   }
 
-  nav > a {
+  nav>a {
     margin: 5px;
     font-size: medium;
   }
@@ -164,4 +163,62 @@ main {
     flex-direction: column;
     gap: 5px;
   }
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; 
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: aliceblue;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  background-color: rgba(240, 248, 255, 0.894);
+  cursor: pointer;
+}
+
+.tag-progress {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  margin-left: auto; 
+}
+
+.em_progresso {
+  color: hsl(29, 97%, 30%);
+  background-color: hsl(39, 57%, 72%);
+}
+
+.concluido {
+  background-color: hsl(104, 73%, 69%);
+  color: hsl(104, 73%, 21%);
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  color: #6c757d;
+}
+
+.date {
+  font-size: 0.85rem;
+  text-align: right;
+  padding-top: 1rem;
 }
