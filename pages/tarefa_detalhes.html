@@ -26,6 +26,26 @@
     </header>
 
     <main>
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Adicionar Nova Tarefa</h2>
+                <form id="taskForm">
+                    <label for="taskName">Nome da Tarefa:</label>
+                    <input type="text" id="taskName" name="taskName" required>
+
+                    <label for="pomodoroEstimate">Estimativa de Pomodoros:</label>
+                    <input type="number" id="pomodoroEstimate" name="pomodoroEstimate" min="1" required>
+
+                    <label for="taskDescription">Descrição (opcional):</label>
+                    <textarea id="taskDescription" name="taskDescription"></textarea>
+
+                    <button type="submit">Salvar Tarefa</button>
+                </form>
+            </div>
+        </div>
+
 
         <section id="timer">
             <header class="slider">
@@ -96,6 +116,8 @@
     </main>
 
     <script src="../js/timer.js"></script>
+    <script src="../js/modal.js"></script>
+    <script src="../js/utils.js"></script>
 </body>
 
 </html>

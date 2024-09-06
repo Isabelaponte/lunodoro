@@ -26,22 +26,64 @@
     </header>
 
     <main>
-        <h1>Lista de Tarefas</h1>
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Adicionar Nova Lista</h2>
+                <form id="taskForm">
+                    <label for="taskName">Nome da Lista:</label>
+                    <input type="text" id="taskName" name="taskName" required>
+
+                    <label for="taskDescription">Descrição (opcional):</label>
+                    <textarea id="taskDescription" name="taskDescription"></textarea>
+
+                    <label for="listType">Tipo de Lista:</label>
+                    <select id="listType" name="listType">
+                        <option value="pessoal">Pessoal</option>
+                        <option value="trabalho">Trabalho</option>
+                        <option value="estudo">Estudo</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <p>*Acesse a lista para adicionar tarefas</p>
+
+                    <button type="submit">Salvar Lista</button>
+                </form>
+            </div>
+        </div>
+
+
+        <header class="tasks-header">
+            <h1>Lista de Tarefas</h1>
+            <button class="add-task-btn">Adicionar Tarefa</button>
+        </header>
         <section>
             <div class="card">
-                <div class="tag-progress em_progresso">Em progresso</div>
+                <div class="div-list">
+                    <div class="list-type">Tipo: Pessoal</div>
+                    <div class="tag-progress em_progresso">Em progresso</div>
+                </div>
                 <h3><a href="tarefa_detalhes.html">Lista 1</a></h3>
                 <p>Descrição da lista 1</p>
                 <p class="date">Criada em 30/08/2024</p>
             </div>
+
             <div class="card">
-                <div class="tag-progress concluido">Concluída</div>
+                <div class="div-list">
+                    <div class="list-type">Tipo: Trabalho</div>
+                    <div class="tag-progress concluido">Concluída</div>
+                </div>
                 <h3>Lista 2</h3>
                 <p>Descrição da lista 2</p>
                 <p class="date">Criada em 30/08/2024</p>
             </div>
+
             <div class="card">
-                <div class="tag-progress concluido">Concluída</div>
+                <div class="div-list">
+                    <div class="list-type">Tipo: Estudo</div>
+                    <div class="tag-progress vazia">Lista vazia</div>
+                </div>
                 <h3>Lista 3</h3>
                 <p>Descrição da lista 3</p>
                 <p class="date">Criada em 30/08/2024</p>
@@ -49,6 +91,7 @@
         </section>
     </main>
     <script src="../js/timer.js"></script>
+    <script src="../js/modal.js"></script>
 </body>
 
 </html>
