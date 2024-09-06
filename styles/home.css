@@ -1,75 +1,37 @@
 body {
-  background-color: var(--cor-background-primario);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  color: var(--cor-texto);
-  min-height: 100vh;
-  margin: 0;
+    background-color: (--cor-background-primario);
+    color: #333;
+    text-align: center;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  margin: 3.5rem auto;
-  height: 70vh;
-  padding: 20px 100px;
+.home-container {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem; 
-  margin-top: 2rem;
+.welcome-message {
+    font-size: 32px;
+    color: var(--cor-background-primario);
+    margin-bottom: 20px;
 }
 
-.card {
-  background-color: aliceblue;
-  border-radius: 8px;
-  padding: 1rem 2rem;
-  max-width: 400px;
-  width: 100%;
-  color: black;
-  display: flex;
-  flex-direction: column;
+.intro-text {
+    font-size: 18px;
+    margin-bottom: 30px;
 }
 
-.card:hover {
-  background-color: rgba(240, 248, 255, 0.894);
-  cursor: pointer;
-}
-
-.tag-progress {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 20px;
-  font-weight: 600;
-  padding: 0.25rem 0.75rem;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  margin-left: auto; 
-}
-
-.em_progresso {
-  color: hsl(29, 97%, 30%);
-  background-color: hsl(39, 57%, 72%);
-}
-
-.concluido {
-  background-color: hsl(104, 73%, 69%);
-  color: hsl(104, 73%, 21%);
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-p {
-  color: #6c757d;
-}
-
-.date {
-  font-size: 0.85rem;
-  text-align: right;
-  padding-top: 1rem;
+.task-list-link {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: var(--cor-destaque);
+    color: var(--cor-background-primario);
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
 }
