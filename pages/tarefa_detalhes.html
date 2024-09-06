@@ -13,63 +13,87 @@
 <body>
     <header class="header_nav">
         <div class="icon">
-            <img src="./../img/logo.png" alt="logo" id="logo" />
-            <h1>Lunodoro</h1>
+          <img src="./../img/logo.png" alt="logo" id="logo" />
+          <h1>Lunodoro</h1>
         </div>
-
         <nav>
-            <a href="home.html">Home</a>
-            <a href="about.html">Sobre nós</a>
-            <a href="faq.html">Sobre o Lunodoro</a>
+          <a href="home.html">Lista de Tarefas</a>
+          <a href="reports.html">Relatórios</a>
+          <a href="faq.html">Sobre o Lunodoro</a>
         </nav>
         <a href="login.html" class="login">Login</a>
-    </header>
+      </header>
 
-    <main>
-        <h2>Lista 01</h2>
-        <p class="description_list">Descrição da lista 01</p>
-        <section>
-            <div class="task">
-                <div class="task-info">
-                    <h3>Tarefa 1</h3>
-                    <p>Descrição da tarefa 1</p>
-                    <p class="date">Criada em 31/08/2024</p>
-                    <ul class="checklist">
-                        <li><input type="checkbox" id="item1" /> <label for="item1">Subtarefa 1</label></li>
-                        <li><input type="checkbox" id="item2" /> <label for="item2">Subtarefa 2</label></li>
-                        <li><input type="checkbox" id="item3" /> <label for="item3">Subtarefa 3</label></li>
-                    </ul>
+      <main>
+
+        <section id="timer">
+            <header class="slider">
+                <ul>
+                    <li id="select_pomodoro">Pomodoro</li>
+                    <li id="select_descanso">Descanso</li>
+                </ul>
+            </header>
+
+            <p class="timer_count">25:00</p>
+            <button id="start_pause_button">Iniciar</button>
+        </section>
+
+        <section class="container">
+            <header class="tasks-header">
+                <button class="back-btn">Voltar</button>
+                <h1>Nome da Lista</h1>
+                <button class="add-task-btn">Adicionar Tarefa</button>
+            </header>
+            
+            <article class="tasks">
+                <div class="task-item pending">
+                    <h2>Nome da Tarefa</h2>
+                    <p>Status: Pendente</p>
+                    <p>Estimativa: 2 Pomodoros</p>
+                    <div class="task-actions">
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Deletar</button>
+                        <button class="pomodoro-btn">Iniciar Pomodoro</button>
+                    </div>
                 </div>
-                <div class="task-status em_progresso">Em progresso</div>
-            </div>
-            <div class="task">
-                <div class="task-info">
-                    <h3>Tarefa 2</h3>
-                    <p>Descrição da tarefa 2</p>
-                    <p class="date">Criada em 31/08/2024</p>
-                    <ul class="checklist">
-                        <li><input type="checkbox" id="item4" checked /> <label for="item4">Subtarefa 1</label></li>
-                        <li><input type="checkbox" id="item5" checked /> <label for="item5">Subtarefa 2</label></li>
-                        <li><input type="checkbox" id="item6" /> <label for="item6">Subtarefa 3</label></li>
-                    </ul>
+
+                <div class="task-item pending">
+                    <h2>Nome da Tarefa</h2>
+                    <p>Status: Pendente</p>
+                    <p>Estimativa: 2 Pomodoros</p>
+                    <div class="task-actions">
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Deletar</button>
+                        <button class="pomodoro-btn">Iniciar Pomodoro</button>
+                    </div>
                 </div>
-                <div class="task-status concluido">Concluída</div>
-            </div>
-            <div class="task">
-                <div class="task-info">
-                    <h3>Tarefa 3</h3>
-                    <p>Descrição da tarefa 3</p>
-                    <p class="date">Criada em 31/08/2024</p>
-                    <ul class="checklist">
-                        <li><input type="checkbox" id="item7" /> <label for="item7">Subtarefa 1</label></li>
-                        <li><input type="checkbox" id="item8" /> <label for="item8">Subtarefa 2</label></li>
-                        <li><input type="checkbox" id="item9" /> <label for="item9">Subtarefa 3</label></li>
-                    </ul>
+
+                <div class="task-item pending">
+                    <h2>Nome da Tarefa</h2>
+                    <p>Status: Pendente</p>
+                    <p>Estimativa: 2 Pomodoros</p>
+                    <div class="task-actions">
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Deletar</button>
+                        <button class="pomodoro-btn">Iniciar Pomodoro</button>
+                    </div>
                 </div>
-                <div class="task-status pendente">Pendente</div>
-            </div>
+
+                <div class="task-item pending">
+                    <h2>Nome da Tarefa</h2>
+                    <p>Status: Pendente</p>
+                    <p>Estimativa: 2 Pomodoros</p>
+                    <div class="task-actions">
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Deletar</button>
+                        <button class="pomodoro-btn">Iniciar Pomodoro</button>
+                    </div>
+                </div>
+            </article>
+
         </section>
     </main>
+
     <script src="../js/timer.js"></script>
 </body>
 
