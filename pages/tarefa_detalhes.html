@@ -34,17 +34,25 @@
                 <form id="taskForm">
                     <label for="taskName">Nome da Tarefa:</label>
                     <input type="text" id="taskName" name="taskName" required>
-
-                    <label for="pomodoroEstimate">Estimativa de Pomodoros:</label>
-                    <input type="number" id="pomodoroEstimate" name="pomodoroEstimate" min="1" required>
-
+        
+                    
+                    <label for="startDate">Data de Início:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                    
+                    <label for="endDate">Data de Término:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                    
                     <label for="taskDescription">Descrição (opcional):</label>
                     <textarea id="taskDescription" name="taskDescription"></textarea>
-
+                    
+                    <label for="pomodoroEstimate">Estimativa de Pomodoros:</label>
+                    <input type="number" id="pomodoroEstimate" name="pomodoroEstimate" min="1" required>
+                    
                     <button type="submit">Salvar Tarefa</button>
                 </form>
             </div>
         </div>
+        
 
 
         <section id="timer">
@@ -76,16 +84,12 @@
                         <button class="delete-btn">Deletar</button>
                         <button class="pomodoro-btn">Concluir Tarefa</button>
                     </div>
-                </div>
-
-                <div class="task-item pending">
-                    <h2>Nome da Tarefa</h2>
-                    <p>Status: Pendente</p>
-                    <p>Estimativa: 2 Pomodoros</p>
-                    <div class="task-actions">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Deletar</button>
-                        <button class="pomodoro-btn">Concluir Tarefa</button>
+                    <button class="expand-btn">Mostrar Detalhes</button>
+                    
+                    <div class="task-details">
+                        <p>Data de Início: 01/09/2024</p>
+                        <p>Data de Término: 05/09/2024</p>
+                        <p>Descrição: Descrição detalhada da tarefa...</p>
                     </div>
                 </div>
 
@@ -98,6 +102,13 @@
                         <button class="delete-btn">Deletar</button>
                         <button class="pomodoro-btn">Concluir Tarefa</button>
                     </div>
+                    <button class="expand-btn">Mostrar Detalhes</button>
+                    
+                    <div class="task-details">
+                        <p>Data de Início: 01/09/2024</p>
+                        <p>Data de Término: 05/09/2024</p>
+                        <p>Descrição: Descrição detalhada da tarefa...</p>
+                    </div>
                 </div>
 
                 <div class="task-item pending">
@@ -108,6 +119,31 @@
                         <button class="edit-btn">Editar</button>
                         <button class="delete-btn">Deletar</button>
                         <button class="pomodoro-btn">Concluir Tarefa</button>
+                    </div>
+                    <button class="expand-btn">Mostrar Detalhes</button>
+                    
+                    <div class="task-details">
+                        <p>Data de Início: 01/09/2024</p>
+                        <p>Data de Término: 05/09/2024</p>
+                        <p>Descrição: Descrição detalhada da tarefa...</p>
+                    </div>
+                </div>
+
+                <div class="task-item pending">
+                    <h2>Nome da Tarefa</h2>
+                    <p>Status: Pendente</p>
+                    <p>Estimativa: 2 Pomodoros</p>
+                    <div class="task-actions">
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Deletar</button>
+                        <button class="pomodoro-btn">Concluir Tarefa</button>
+                    </div>
+                    <button class="expand-btn">Mostrar Detalhes</button>
+                    
+                    <div class="task-details">
+                        <p>Data de Início: 01/09/2024</p>
+                        <p>Data de Término: 05/09/2024</p>
+                        <p>Descrição: Descrição detalhada da tarefa...</p>
                     </div>
                 </div>
             </article>
@@ -118,6 +154,7 @@
     <script src="../js/timer.js"></script>
     <script src="../js/modal.js"></script>
     <script src="../js/utils.js"></script>
+    <script src="../js/tasks.js"></script>
 </body>
 
 </html>
