@@ -26,17 +26,12 @@ section {
 .card {
   background-color: aliceblue;
   border-radius: 8px;
-  padding: 1rem 2rem;
+  padding: 1rem;
   max-width: 400px;
   width: 100%;
   color: black;
   display: flex;
   flex-direction: column;
-}
-
-.card:hover {
-  background-color: rgba(240, 248, 255, 0.894);
-  cursor: pointer;
 }
 
 .tag-progress {
@@ -47,7 +42,6 @@ section {
   padding: 0.25rem 0.75rem;
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  margin-left: auto;
 }
 
 .em_progresso {
@@ -189,4 +183,19 @@ p {
   to {
     opacity: 1;
   }
+}
+
+.more-options {
+  display: flex;
+  gap: 1px;
+}
+
+.more-options-btn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.more-options-btn > img {
+  width: 25px;
 }
