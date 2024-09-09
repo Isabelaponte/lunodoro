@@ -4,6 +4,11 @@ O Lunodoro é um sistema de organização de tarefas que permite que os usuário
 
 Além disso, o Lunodoro possui um sistema de Pomodoro integrado, que permite o gerenciamento de tempo que divide o trabalho em blocos de tempo focado, no qual o usuário selecionará o tempo, seguidos por uma breve pausa.
 
+## SESSÃO SEM LOGIN
+Para usuários que não estão logados, o sistema irá exibir todas as telas normalmente, no qual os usuários poderão criar, visualizar e gerenciar listas de tarefas, porém com um limite de 3 listas por usuário. Os dados das listas serão salvos localmente no navegador, garantindo a privacidade dos usuários, excluindo as informações quando o navegador é fechado.
+
+Para usuários já logados, o sistema permitirá, além de um gerenciamento de tarefas e listas mais complto, que os usuários possam acompanhar os relatórios que o sistema gera automaticamente.
+
 ## MER
 
 ![MER_pomodoro](./public/MER/MER.png)
