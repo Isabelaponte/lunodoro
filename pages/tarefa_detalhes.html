@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../styles/globals.css" />
     <link rel="stylesheet" href="./../styles/tarefas_detalhes.css" />
-
-    <title>Lunodoro</title>
+    <title>Lunodoro - Detalhes da Lista</title>
 </head>
-
 <body>
     <header class="header_nav">
         <div class="icon">
@@ -24,7 +21,6 @@
         </nav>
         <a href="login.html" class="login">Login</a>
     </header>
-
     <main>
         <!-- Modal -->
         <div id="myModal" class="modal">
@@ -62,99 +58,23 @@
                     <li id="select_descanso">Descanso</li>
                 </ul>
             </header>
-
             <p class="timer_count">25:00</p>
             <button id="start_pause_button">Iniciar</button>
         </section>
-
         <section class="container">
             <header class="tasks-header">
                 <button class="back-btn">Voltar</button>
-                <h1>Nome da Lista</h1>
-                <button class="add-task-btn">Adicionar Tarefa</button>
+                <h1 id="listName">Nome da Lista</h1>
+                <button class="add-task-btn" id="addTaskBtn">Adicionar Tarefa</button>
             </header>
-
-            <article class="tasks">
-                <div class="task-item pending">
-                    <h2>Nome da Tarefa</h2>
-                    <p>Status: Pendente</p>
-                    <p>Estimativa: 2 Pomodoros</p>
-                    <div class="task-actions">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Deletar</button>
-                        <button class="pomodoro-btn">Concluir Tarefa</button>
-                    </div>
-                    <button class="expand-btn">Mostrar Detalhes</button>
-                    
-                    <div class="task-details">
-                        <p>Data de Início: 01/09/2024</p>
-                        <p>Data de Término: 05/09/2024</p>
-                        <p>Descrição: Descrição detalhada da tarefa...</p>
-                    </div>
-                </div>
-
-                <div class="task-item pending">
-                    <h2>Nome da Tarefa</h2>
-                    <p>Status: Pendente</p>
-                    <p>Estimativa: 2 Pomodoros</p>
-                    <div class="task-actions">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Deletar</button>
-                        <button class="pomodoro-btn">Concluir Tarefa</button>
-                    </div>
-                    <button class="expand-btn">Mostrar Detalhes</button>
-                    
-                    <div class="task-details">
-                        <p>Data de Início: 01/09/2024</p>
-                        <p>Data de Término: 05/09/2024</p>
-                        <p>Descrição: Descrição detalhada da tarefa...</p>
-                    </div>
-                </div>
-
-                <div class="task-item pending">
-                    <h2>Nome da Tarefa</h2>
-                    <p>Status: Pendente</p>
-                    <p>Estimativa: 2 Pomodoros</p>
-                    <div class="task-actions">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Deletar</button>
-                        <button class="pomodoro-btn">Concluir Tarefa</button>
-                    </div>
-                    <button class="expand-btn">Mostrar Detalhes</button>
-                    
-                    <div class="task-details">
-                        <p>Data de Início: 01/09/2024</p>
-                        <p>Data de Término: 05/09/2024</p>
-                        <p>Descrição: Descrição detalhada da tarefa...</p>
-                    </div>
-                </div>
-
-                <div class="task-item pending">
-                    <h2>Nome da Tarefa</h2>
-                    <p>Status: Pendente</p>
-                    <p>Estimativa: 2 Pomodoros</p>
-                    <div class="task-actions">
-                        <button class="edit-btn">Editar</button>
-                        <button class="delete-btn">Deletar</button>
-                        <button class="pomodoro-btn">Concluir Tarefa</button>
-                    </div>
-                    <button class="expand-btn">Mostrar Detalhes</button>
-                    
-                    <div class="task-details">
-                        <p>Data de Início: 01/09/2024</p>
-                        <p>Data de Término: 05/09/2024</p>
-                        <p>Descrição: Descrição detalhada da tarefa...</p>
-                    </div>
-                </div>
+            <article class="tasks" id="taskList">
             </article>
-
         </section>
     </main>
-
     <script src="../js/timer.js"></script>
     <script src="../js/modal.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/tasks.js"></script>
+    <script src="../js/detalhar_lista.js"></script>
 </body>
-
 </html>

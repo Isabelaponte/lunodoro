@@ -66,6 +66,7 @@ const saveListsToLocal = (lists) => {
         status: "em_progresso",
         statusLabel: "Em progresso",
         date: new Date().toLocaleDateString(),
+        tarefas: [],
       };
   
       const lists = getListsFromLocal();
@@ -77,7 +78,7 @@ const saveListsToLocal = (lists) => {
       lists[currentEditIndex] = {
         ...lists[currentEditIndex],
         name: taskName,
-        description: taskDescription || "Sem descrição",
+        description: taskDescription,
         type: listType,
       };
   
