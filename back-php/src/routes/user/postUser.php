@@ -9,9 +9,7 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 
-echo 'acessado';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if (validatorMethodServer('POST')) {
     $name = $_POST['name'] ?? null;
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
@@ -27,14 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("INSERT INTO usuario (nome_usuario, email, senha) VALUES (?, ?, ?)");
             $stmt->execute([$name, $email, $password]);
 
             $stmt = $conn->prepare("SELECT id, nome_usuario, email, senha FROM usuario WHERE email = ?");
             $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            $conn->commit();
             if ($user) {
+                http_response_code(200);
                 echo json_encode([
                     'user' => [
                         'id' => $user['id'],
@@ -47,9 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 http_response_code(404);
                 echo json_encode(['message' => 'Usuário não encontrado.']);
             }
-        } catch (Exception $exception) {
-            http_response_code(503);
-            echo json_encode(['error' => $exception->getMessage()]);
+        } catch (PDOException $exception) {
+            if ($exception->getCode() == 23000) {
+                http_response_code(409);
+                echo json_encode([
+                    'error' => 'Conflito nos dados enviados'
+                ]);
+            } else {
+                http_response_code(500);
+                echo json_encode([
+                    'error' => 'Internal Server Error'
+                ]);
+            }
             exit;
         }
     } else {
