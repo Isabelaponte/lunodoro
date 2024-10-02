@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../styles/globals.css" />
     <link rel="stylesheet" href="./../styles/home.css" />
-
     <title>Lunodoro</title>
 </head>
 
 <body>
+    <?php
+        session_start();
+        $user = isset($_SESSION['nome_usuario']) ? htmlspecialchars($_SESSION['nome_usuario']) : "Visitante";
+    ?>
+    
     <header class="header_nav">
         <div class="icon">
             <img src="./../img/logo.png" alt="logo" id="logo" />
@@ -26,9 +30,8 @@
     </header>
 
     <main class="home-container">
-        <h1 class="welcome-message">Bem-vindo, [Nome do Usuário]!</h1>
-        <p class="intro-text">Para começar, crie sua lista de tarefas e comece a organizar seu tempo de forma eficiente.
-        </p>
+        <h1 class="welcome-message">Bem-vindo, <?php echo $user; ?>!</h1>
+        <p class="intro-text">Para começar, crie sua lista de tarefas e comece a organizar seu tempo de forma eficiente.</p>
         <a href="./lista_tarefas.html" class="task-list-link">Acessar minhas listas de tarefas</a>
     </main>
 </body>

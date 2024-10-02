@@ -17,8 +17,8 @@ class UserValidator
         }
 
         // Validar Senha
-        if (empty($password)) {
-            $errors[] = "A senha é obrigatória.";
+        if (empty($password) || !self::validateMinimumPasswordLength($password)) {
+            $errors[] = "A senha é obrigatória e deve ter pelo menos 6 caracteres.";
         }
 
         // Validar Data de Criação da Conta
@@ -29,9 +29,31 @@ class UserValidator
         return $errors;
     }
 
+    public static function validateLogin($email, $password)
+    {
+        $errors = [];
+
+        // Validar Email
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Formato de email inválido.";
+        }
+
+        // Validar Senha
+        if (empty($password)) {
+            $errors[] = "A senha é obrigatória.";
+        }
+
+        return $errors;
+    }
+
     private static function validateDate($date)
     {
         $d = DateTime::createFromFormat('Y-m-d H:i:s', $date);
         return $d && $d->format('Y-m-d H:i:s') === $date;
+    }
+
+    private static function validateMinimumPasswordLength($password)
+    {
+        return (strlen($password) >= 6) ? true :  false;
     }
 }

@@ -8,13 +8,11 @@ class User
     private $password;
     private $dt_account_creation;
 
-    public function __construct($id = null, $name = null, $email, $password, $dt_account_creation = null)
+    public function __construct($name, $email, $password)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->dt_account_creation = $dt_account_creation;
     }
 
     public function getId()

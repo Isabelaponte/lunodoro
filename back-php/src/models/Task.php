@@ -9,11 +9,10 @@ class Task {
     private $status;
     private $list_id;
 
-    public function __construct($id, $name, $description, $start_date, $end_date, $status, $list_id) {
+    public function __construct($id, $name, $description, $end_date, $status, $list_id) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
-        $this->start_date = $start_date;
         $this->end_date = $end_date;
         $this->status = $status;
         $this->list_id = $list_id;
@@ -57,10 +56,6 @@ class Task {
 
     public function setDescription($description) {
         $this->description = $description;
-    }
-
-    public function setStartDate($start_date) {
-        $this->start_date = $start_date;
     }
 
     public function setEndDate($end_date) {

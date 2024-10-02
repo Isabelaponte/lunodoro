@@ -1,55 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./../styles/globals.css" />
     <link rel="stylesheet" href="./../styles/auth.css" />
     <title>Lunodoro</title>
-  </head>
-
-  <body>
+</head>
+<body>
     <header class="header_nav">
-      <div class="icon">
-          <img src="./../img/logo.png" alt="logo" id="logo" />
-          <h1>Lunodoro</h1>
-      </div>
-      <nav>
-          <a href="home.html">Home</a>
-          <a href="lista_tarefas.html">Lista de Tarefas</a>
-          <a href="reports.html">Relatórios</a>
-          <a href="faq.html">Sobre o Lunodoro</a>
-      </nav>
-      <a href="login.html" class="login">Login</a>
-  </header>
+        <div class="icon">
+            <img src="./../img/logo.png" alt="logo" id="logo" />
+            <h1>Lunodoro</h1>
+        </div>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="lista_tarefas.html">Lista de Tarefas</a>
+            <a href="reports.html">Relatórios</a>
+            <a href="faq.html">Sobre o Lunodoro</a>
+        </nav>
+        <a href="login.html" class="login">Login</a>
+    </header>
 
     <main>
-      <div class="main_content">
-        <section>
-          <header>
-            <h1>Cadastro</h2>
-          </header>
+        <div class="main_content">
+            <section>
+                <header>
+                    <h1>Cadastro</h1>
+                </header>
 
-          <form>
-            <label for="user">Nome de usuário</label>
-            <input type="text" id="user" name="user" />
+                <form method="post" action="./../back-php/src/routes/user/postUser.php">
+                    <label for="name">Nome de usuário</label>
+                    <input type="text" id="name" name="name" />
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" />
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" />
 
-            <label for="senha">Senha</label>
-            <input type="password" id="senha" name="senha" />
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" />
 
-            <button type="submit">Cadastrar</button>
+                    <button type="submit">Cadastrar</button>
 
-            <div class="other_options">
-              <a href="./login.html">Realizar login</a>
-            </div>
-          </form>
-        </section>
-      </div>
+                    <div class="other_options">
+                        <a href="./login.html">Realizar login</a>
+                    </div>
+                </form>
+            </section>
+        </div>
 
-      <img id="img_astronauta" src="./../img/astronauta.png" alt="astronauta" />
+        <img id="img_astronauta" src="./../img/astronauta.png" alt="astronauta" />
     </main>
-  </body>
+</body>
 </html>

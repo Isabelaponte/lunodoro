@@ -7,10 +7,9 @@ class FocusTime {
     private $focus_time_id;
 
     // Constructor
-    public function __construct($task_id, $duration, $recorded_date, $focus_time_id) {
+    public function __construct($task_id, $duration, $focus_time_id) {
         $this->task_id = $task_id;
         $this->duration = $duration;
-        $this->recorded_date = $recorded_date;
         $this->focus_time_id = $focus_time_id;
     }
 
@@ -38,10 +37,6 @@ class FocusTime {
 
     public function setDuration($duration) {
         $this->duration = $duration;
-    }
-
-    public function setRecordedDate($recorded_date) {
-        $this->recorded_date = $recorded_date;
     }
 
     public function setFocusTimeId($focus_time_id) {

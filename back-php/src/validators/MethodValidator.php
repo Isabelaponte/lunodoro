@@ -1,6 +1,6 @@
 <?php
-    function isMetodo($metodo){
-        return (!(strcasecmp($_SERVER['REQUEST_METHOD'], $metodo)) ? true : false);
+    function validatorMethodServer($method){
+        return (!(strcasecmp($_SERVER['REQUEST_METHOD'], $method)) ? true : false);
     }
 
 ?>
