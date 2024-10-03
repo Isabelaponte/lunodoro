@@ -7,23 +7,23 @@ class UserValidator
         $errors = [];
 
         // Validar Nome
-        if (empty($name) || !is_string($name)) {
-            $errors[] = "O nome deve ser uma string não vazia.";
+        if (self::isNullOrEmpty($name) || !is_string($name)) {
+            $errors[] = "O nome deve ser uma string nao vazia.";
         }
 
         // Validar Email
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Formato de email inválido.";
+        if (self::isNullOrEmpty($email) || self::isAInvalidEmail($email)) {
+            $errors[] = "Campo email vazio ou invalido.";
         }
 
         // Validar Senha
         if (empty($password) || !self::validateMinimumPasswordLength($password)) {
-            $errors[] = "A senha é obrigatória e deve ter pelo menos 6 caracteres.";
+            $errors[] = "A senha e obrigatoria e deve ter pelo menos 6 caracteres.";
         }
 
         // Validar Data de Criação da Conta
         if ($dt_account_creation !== null && !self::validateDate($dt_account_creation)) {
-            $errors[] = "A data de criação da conta deve estar no formato Y-m-d H:i:s.";
+            $errors[] = "A data de criacao da conta deve estar no formato Y-m-d H:i:s.";
         }
 
         return $errors;
@@ -34,13 +34,13 @@ class UserValidator
         $errors = [];
 
         // Validar Email
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Formato de email inválido.";
+        if (self::isNullOrEmpty($email) || self::isAInvalidEmail($email)) {
+            $errors[] = "Campo email vazio ou invalido.";
         }
 
         // Validar Senha
-        if (empty($password)) {
-            $errors[] = "A senha é obrigatória.";
+        if (self::isNullOrEmpty($password)) {
+            $errors[] = "Campo senha obrigatorio.";
         }
 
         return $errors;
@@ -55,5 +55,15 @@ class UserValidator
     private static function validateMinimumPasswordLength($password)
     {
         return (strlen($password) >= 6) ? true :  false;
+    }
+
+    private static function isNullOrEmpty($value)
+    {
+        return $value === null || empty($value);
+    }
+
+    private static function isAInvalidEmail($email)
+    {
+        return !filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 }
