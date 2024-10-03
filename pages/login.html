@@ -15,7 +15,7 @@
             <h1>Lunodoro</h1>
         </div>
         <nav>
-            <a href="home.html">Home</a>
+            <a href="home.php">Home</a>
             <a href="lista_tarefas.html">Lista de Tarefas</a>
             <a href="reports.html">Relatórios</a>
             <a href="faq.html">Sobre o Lunodoro</a>
@@ -29,12 +29,12 @@
                 <header>
                     <h1>Login</h1>
                 </header>
-                <form action="./../back-php/src/routes/user/getUser.php">
+                <form action="./../back-php/src/controllers/userController.php">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required />
+                    <input type="email" id="email" name="email" />
 
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required />
+                    <input type="password" id="password" name="password" />
 
                     <button type="submit">Entrar</button>
 
