@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./../styles/routes.css" />
+    <link rel="stylesheet" href="./../styles/globals.css" />
+    <title>Lunodoro Rotas</title>
+</head>
+<body>
+    <header>
+        <h1>Lunodoro Rotas</h1>
+        <p>
+            O Lunodoro é um sistema de organização de tarefas que permite que os usuários se cadastrem, criem e gerenciem listas de tarefas de forma eficiente. Cada usuário pode criar várias listas, que armazenam múltiplas tarefas e permitem o acompanhamento do tempo focado usando o método Pomodoro.
+        </p>
+        <p>
+            As informações a serem enviadas no corpo da requisição podem ser do tipo <strong>application/json</strong>.
+        </p>
+    </header>
+
+    <div class="container">
+        <h2>Usuários</h2>
+        <h3>
+            URL de requisição:
+            <a href="listas">https://lunodoro/usuarios/</a>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint</th>
+                    <th>Descrição</th>
+                    <th>Exemplo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td>POST <a href="usuarios">/usuarios</a></td>
+                    <td>Cadastra um novo usuário, requer <b>nome</b>, <b>email</b> e <b>senha</b></td>
+                    <td>
+                        <pre>
+{
+    "nome": "isabela",
+    "email": "isabela@example.com",
+    "senha": "senhaSegura"
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>GET <a href="meusDados">/meusDados</a></td>
+                    <td>Obtém os dados do usuário logado, requer <b>email</b> e <b>senha</b></td>
+                    <td>
+                        <pre>
+{
+    "id": 1,
+    "email": "ryan@example.com",
+    "senha": "senhaSegura",
+    "dt_criacao": "2024-10-08 14:36:19"
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>POST <a href="login">/login</a></td>
+                    <td>Realiza o login de um usuário, requer <b>email</b> e <b>senha</b></td>
+                    <td>
+                        <pre>
+{
+    "email": "guilherme@example.com",
+    "senha": "senhaSegura"
+}</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
