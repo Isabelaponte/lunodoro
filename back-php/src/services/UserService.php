@@ -3,8 +3,6 @@
 require_once(__DIR__ . '/../validators/UserValidator.php');
 require_once(__DIR__ . '/../repositories/UserRepository.php');
 require_once(__DIR__ . '/../config/utils.php');
-require_once(__DIR__ . '/../NotValidUserException.php');
-
 
 class UserService
 {
@@ -16,7 +14,12 @@ class UserService
             output(400, ["errors" => $errors]);
         }
 
-        $user = UserRepository::findUserFromDatabase($email, $password);
+        $user = UserRepository::loginUser($email, $password);
+
+        if (!$user) {
+            throw new Exception("Usuário ou senha inválidos", 401);
+        }
+
         return $user;
     }
 
@@ -35,5 +38,22 @@ class UserService
         }
 
         return "Usuario criado com sucesso!";
+    }
+
+    public static function getMyData($email, $password)
+    {
+        $errors = UserValidator::validateLogin($email, $password);
+
+        if (!empty($errors)) {
+            output(400, ["errors" => $errors]);
+        }
+
+        $user = UserRepository::getUserData($email, $password);
+
+        if (!$user) {
+            throw new Exception("Usuário ou senha inválidos", 401);
+        }
+
+        return $user;
     }
 }
