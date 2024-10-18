@@ -23,7 +23,7 @@ class UserService
         return $user;
     }
 
-    public static function saveUser($email, $password, $name){
+    public static function saveUser($name, $email, $password){
 
         $errors = UserValidator::validate($name, $email, $password);
 

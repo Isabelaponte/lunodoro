@@ -15,8 +15,9 @@ class UserRepository
             $stmt->execute([$name, $email, $hashedPassword]);
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            error_log($e->getMessage());
             if ($e->getCode() == 23000) {
-                throw new Exception("Usuário com esse email já cadastrado no sistema", 409);
+                throw new Exception("Email indisponível para uso no sistema.", 409);
             }
             throw new Exception("Erro ao cadastrar usuário", 500);
         }
@@ -46,18 +47,17 @@ class UserRepository
     {
         try {
             $conn = Connection::getConnection();
-            $stmt = $conn->prepare("SELECT id, nome_usuario, senha,
-            dt_criacao_conta FROM usuario WHERE email = ?");
+            $stmt = $conn->prepare("SELECT senha FROM usuario WHERE email = ?");
             $stmt->execute([$email]);
             $user = $stmt->fetch();
-
+    
             if ($user && password_verify($password, $user['senha'])) {
-                unset($user['senha']);
-                return $user;
+                return true;
             }
-            return null;
+            return false; 
         } catch (PDOException $e) {
             throw new Exception("Erro ao acessar os dados", 500);
         }
     }
+    
 }
