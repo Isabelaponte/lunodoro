@@ -59,5 +59,5 @@ class UserValidator
     private static function isAInvalidEmail($email)
     {
         return !filter_var($email, FILTER_VALIDATE_EMAIL);
-    }
+    } 
 }

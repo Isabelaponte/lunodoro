@@ -47,3 +47,8 @@ function handleJSONInput()
         return false;
     }
 }
+
+
+function isAValidID($id){
+   return (filter_var($id, FILTER_VALIDATE_INT) && $id > 0);
+}
