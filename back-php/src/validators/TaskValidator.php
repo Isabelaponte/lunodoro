@@ -2,13 +2,9 @@
 
 class TaskValidator
 {
-    public static function validate($id, $name, $description, $start_date, $end_date, $status, $list_id)
+    public static function validate($name, $description, $end_date, $status)
     {
         $errors = [];
-
-        if (!is_int($id) || $id <= 0) {
-            $errors[] = "O ID deve ser um número inteiro positivo.";
-        }
 
         if (empty($name) || !is_string($name)) {
             $errors[] = "O nome da tarefa deve ser uma string não vazia.";
@@ -16,10 +12,6 @@ class TaskValidator
 
         if (!is_string($description)) {
             $errors[] = "A descrição deve ser uma string.";
-        }
-
-        if (!self::validateDate($start_date)) {
-            $errors[] = "A data de início deve estar no formato Y-m-d H:i:s.";
         }
 
         if (!self::validateDate($end_date)) {
@@ -31,9 +23,6 @@ class TaskValidator
             $errors[] = "O status deve ser um dos seguintes: " . implode(', ', $validStatuses) . ".";
         }
 
-        if (!is_int($list_id) || $list_id <= 0) {
-            $errors[] = "O ID da lista deve ser um número inteiro positivo.";
-        }
 
         return $errors;
     }
