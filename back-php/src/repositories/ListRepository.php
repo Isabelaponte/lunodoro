@@ -5,11 +5,11 @@ require_once(__DIR__ . '/../database/Connection.php');
 class ListRepository
 {
 
-    // POST https://lunodoro/lista
     public static function insertIntoListFromDatabase($id_usuario, $nome_lista, $descricao, $id_tipo_lista)
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("INSERT INTO lista (id_usuario, nome_lista,
              descricao, id_tipo_lista) VALUES (?, ?, ?, ?)");
             $stmt->execute([
@@ -18,13 +18,14 @@ class ListRepository
                 $descricao,
                 $id_tipo_lista
             ]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao cadastrar lista", 500);
         }
     }
 
-    // GET https://lunodoro/usuarios/{id_usuario}/lista/
     public static function findAllLists($id_usuario)
     {
         try {
@@ -41,7 +42,6 @@ class ListRepository
         }
     }
 
-    // GET https://lunodoro/usuarios/{id_usuario}/lista/{id}
     public static function findListFromDatabase($id_usuario, $id)
     {
         try {
@@ -61,7 +61,6 @@ class ListRepository
         }
     }
 
-    // PUT https://lunodoro/usuarios/{id_usuario}/lista/{id}
     public static function updateList($id_usuario, $id, $nome_lista, $descricao, $id_tipo_lista)
     {
         try {
@@ -80,6 +79,7 @@ class ListRepository
             }
 
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("UPDATE lista 
                                 SET nome_lista = ?, descricao = ?, id_tipo_lista = ? 
                                 WHERE id = ? AND id_usuario = ?");
@@ -90,15 +90,15 @@ class ListRepository
                 $id,
                 $id_usuario
             ]);
-
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao atualizar a lista", 500);
         }
     }
 
 
-    // DELETE https://lunodoro/usuarios/{id_usuario}/lista/{id}
     public static function removeList($id_usuario, $id)
     {
         try {
@@ -109,13 +109,16 @@ class ListRepository
             }
 
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("DELETE FROM lista WHERE id_usuario = ? AND id = ?");
             $stmt->execute([
                 $id_usuario,
                 $id
             ]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao remover a lista", 500);
         }
     }

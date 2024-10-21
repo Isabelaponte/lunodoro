@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . '/../database/Connection.php');
 
-class ListTaskRepository
+class TaskListRepository
 {
 
     //POST https://lunodoro/usuarios/{id_usuario}/listas/{id_lista}/tarefas
@@ -10,10 +10,13 @@ class ListTaskRepository
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("INSERT INTO lista_tarefa (id_lista, id_tarefa) VALUES (?, ?)");
             $stmt->execute([$id_lista, $id_tarefa]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao associar a tarefa a lista", 500);
         }
     }
@@ -60,10 +63,13 @@ class ListTaskRepository
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("DELETE FROM lista_tarefa WHERE id_lista = ? AND id_tarefa = ?");
             $stmt->execute([$id_lista, $id_tarefa]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao remover o relacionamento da tarefa com a lista", 500);
         }
     }

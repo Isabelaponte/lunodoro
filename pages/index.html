@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./../styles/routes.css" />
+    <link rel="stylesheet" href="./../styles/globals.css" />
+    <title>Lunodoro Rotas</title>
+</head>
+<body>
+    <header>
+        <h1>Lunodoro Rotas</h1>
+        <p>
+            O Lunodoro é um sistema de organização de tarefas que permite que os usuários se cadastrem, criem e gerenciem listas de tarefas de forma eficiente. Cada usuário pode criar várias listas, que armazenam múltiplas tarefas e permitem o acompanhamento do tempo focado usando o método Pomodoro.
+        </p>
+        <p>
+            As informações a serem enviadas no corpo da requisição podem ser do tipo <strong>application/json</strong>.
+        </p>
+    </header>
+
+    <div class="container">
+        <h2>Usuários</h2>
+        <h3>
+            URL de requisição:
+            <a href="">https://lunodoro/usuarios</a>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint</th>
+                    <th>Descrição</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>GET <a href="usuarios">/usuarios/{id}</a></td>
+                    <td>Obtém os dados do usuário logado, requer <b>id</b></td>
+                    <td>
+                        <pre>
+{
+    "id": 1,
+    "nome_usuario": "Guilherme",
+    "email": "Gui@example.com",
+    "dt_criacao_conta": "2024-10-20 22:49:43"
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>POST <a href="usuarios">/usuarios</a></td>
+                    <td>Cadastra um novo usuário, requer <b>nome</b>, <b>email</b> e <b>senha</b></td>
+                    <td>
+                        <pre>
+{
+    "msg": "Usuario criado com sucesso!"
+}
+</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>POST <a href="login">/usuarios/login</a></td>
+                    <td>Realiza o login de um usuário e retorna seu identificador, requer <b>email</b> e <b>senha</b></td>
+                    <td>
+                        <pre>
+{
+    "id": "1"
+}</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>Tipos de lista</h2>
+        <h3>
+            URL de requisição:
+            <a href="listas">https://lunodoro/tipoLista</a>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint</th>
+                    <th>Descrição</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>GET <a href="tipoLista">/tipoLista</a></td>
+                    <td>Obtém todas os tipos de lista disponíveis da apliacação</b></td>
+                    <td>
+                        <pre>
+{
+    "id": 3,
+    "descricao": "estudo"
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>GET <a href="tipoLista">/tipoLista/{descricao}</a></td>
+                    <td>Obtém os dados de um tipo de lista, requer <b>descricao</b></td>
+                    <td>
+                        <pre>
+[
+    {
+        "id": 1,
+        "descricao": "pessoal"
+    }
+    ...
+]
+</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>Lista</h2>
+        <h3>
+            URL de requisição:
+            <a href="listas">https://lunodoro/usuarios/lista</a>
+        </h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Método</th>
+                    <th>Endpoint</th>
+                    <th>Descrição</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>GET <a href="lista">usuarios/{id_usuario}/lista</a></td>
+                    <td>Obtém os dados de um tipo de lista, requer <b>id_usuario</b></td>
+                    <td>
+                        <pre>
+{
+    "data": [
+        {
+            "id": 1,
+            "id_usuario": 1,
+            "nome_lista": "Estudando TypeScript",
+            "descricao": "Utilizando generics e decorator na prática",
+            "id_tipo_lista": 1,
+            "dt_criacao": "2024-10-20 22:56:46",
+            "dt_atualizacao": "2024-10-20 22:56:46"
+        }
+        ...
+    ]
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>POST</td>
+                    <td>POST <a href="lista">usuarios/{id_usuario}/lista</a></td>
+                    <td>Cria uma nova lista, requer <b>id_usuario</b>, <b>nome_lista </b>, <b>descrição </b>, <b>id_tipo_lista </b>
+                    </td>
+                    <td>
+                        <pre>
+{
+    "msg" : "Lista criada com sucesso!"
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>PUT</td>
+                    <td>PUT <a href="lista">usuarios/{id_usuario}/lista/{id}</a></td>
+                    <td>Altera os dados de uma lista, requer <b>id_usuario</b>, <b>id</b>, <b>nome_lista </b>, <b>descrição </b>, <b>id_tipo_lista </b>
+                    </td>
+                    <td>
+                        <pre>
+{
+    "msg": "Lista atualizada com sucesso!",
+    "data": {
+        "id_usuario": "2",
+        "id": "2",
+        "nome_lista": "Microsserviço com GO e Kafka",
+        "descricao": "Construindo microsserviços com Golang e Kafka",
+        "id_tipo_lista": "2"
+    }
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>DELETE</td>
+                    <td>DELETE <a href="lista">usuarios/{id_usuario}/lista/{id}</a></td>
+                    <td>Remove uma lista, requer <b>id_usuario</b>, <b>id</b>
+                    </td>
+                    <td>
+                        <pre>
+{
+    "msg": "Lista removida com sucesso!",
+    "data": {
+        "id_usuario": "3",
+        "id": "3"
+    }
+}</pre>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -21,7 +21,7 @@ class ListService
         }
 
         return [
-            "message" => "Lista criada com sucesso!",
+            "msg" => "Lista criada com sucesso!",
             "data" => [
                 "id_usuario" => $id_usuario,
                 "nome_lista" => $nome_lista,
@@ -44,7 +44,7 @@ class ListService
         }
 
         return [
-            "message" => "Listas encontradas com sucesso!",
+            "msg" => "Listas encontradas com sucesso!",
             "data" => $response
         ];
     }
@@ -77,7 +77,7 @@ class ListService
         }
     
         return [
-            "message" => "Lista atualizada com sucesso!",
+            "msg" => "Lista atualizada com sucesso!",
             "data" => [
                 "id_usuario" => $id_usuario,
                 "id" => $id,
@@ -103,7 +103,7 @@ class ListService
         }
     
         return [
-            "message" => "Lista removida com sucesso!",
+            "msg" => "Lista removida com sucesso!",
             "data" => [
                 "id_usuario" => $id_usuario,
                 "id" => $id

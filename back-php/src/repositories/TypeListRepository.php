@@ -4,7 +4,6 @@ require_once(__DIR__ . '/../database/Connection.php');
 
 class TypeListRepository
 {
-    // GET https://lunodoro/tipoLista/{descricao}
     public static function findTypeListFromDatabase($descricao)
     {
         try {
@@ -17,7 +16,6 @@ class TypeListRepository
         }
     }
 
-    // GET https://lunodoro/tipoLista/
     public static function findAllTypeList()
     {
         try {

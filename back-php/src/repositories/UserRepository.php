@@ -4,18 +4,19 @@ require_once(__DIR__ . '/../database/Connection.php');
 
 class UserRepository
 {
-    // POST https://lunodoro/usuarios
     public static function insertUserIntoDatabase($name, $email, $password)
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("INSERT INTO usuario (nome_usuario,
              email, senha) VALUES (?, ?, ?)");
             $stmt->execute([$name, $email, $hashedPassword]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            $conn->rollBack();
             if ($e->getCode() == 23000) {
                 throw new Exception("Email indisponível para uso no sistema.", 409);
             }
@@ -23,36 +24,32 @@ class UserRepository
         }
     }
 
-    // GET https://lunodoro/meusDados
-    public static function getUserData($email, $password)
+    public static function getUserData($id)
     {
         try {
             $conn = Connection::getConnection();
-            $stmt = $conn->prepare("SELECT id, nome_usuario, senha, dt_criacao_conta FROM usuario WHERE email = ?");
-            $stmt->execute([$email]);
+            $stmt = $conn->prepare("SELECT id, nome_usuario, email, dt_criacao_conta FROM usuario WHERE id = ?");
+            $stmt->execute([$id]);
             $user = $stmt->fetch();
     
-            if ($user && password_verify($password, $user['senha'])) {
-                unset($user['senha']);
-                return $user;
-            }
-            throw new Exception("Credenciais inválidas", 401);
+
+            return $user;
+
         } catch (PDOException $e) {
-            throw new Exception("Erro ao acessar os dados", 500);
+            throw new Exception("Credenciais inválidas", 401);
         }
     }
     
-    // POST https://lunodoro/login
     public static function loginUser($email, $password)
     {
         try {
             $conn = Connection::getConnection();
-            $stmt = $conn->prepare("SELECT senha FROM usuario WHERE email = ?");
+            $stmt = $conn->prepare("SELECT id, senha FROM usuario WHERE email = ?");
             $stmt->execute([$email]);
             $user = $stmt->fetch();
     
             if ($user && password_verify($password, $user['senha'])) {
-                return true;
+                return $user['id'];
             }
             return false; 
         } catch (PDOException $e) {

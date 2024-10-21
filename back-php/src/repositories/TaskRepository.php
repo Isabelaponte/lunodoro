@@ -6,11 +6,11 @@ require_once(__DIR__. './TaskListRepository.php');
 class TaskRepository
 {
 
-    // POST https://lunodoro/tarefa
     public static function insertTaskIntoDatabase($nome, $descricao, $dt_final, $status)
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("INSERT INTO tarefa (nome, descricao, dt_final, status) VALUES (?, ?, ?, ?)");
             $stmt->execute([
                 $nome,
@@ -18,13 +18,14 @@ class TaskRepository
                 $dt_final,
                 $status
             ]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao cadastrar tarefa", 500);
         }
     }
 
-    // GET https://lunodoro/usuarios/{id_usuario}/tarefa/{id}
     public static function findTaskFromDatabase($id_usuario, $id)
     {
         try {
@@ -40,11 +41,11 @@ class TaskRepository
         }
     }
 
-    // PUT https://lunodoro/usuarios/{id_usuario}/tarefa/{id}
     public static function updateTask($id_usuario, $id, $nome, $descricao, $dt_final, $status)
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare('UPDATE tarefa SET nome = ?, descricao = ?, dt_final = ?, status = ? WHERE id = ? AND id_usuario = ?');
             $stmt->execute([
                 $nome,
@@ -54,24 +55,28 @@ class TaskRepository
                 $id,
                 $id_usuario
             ]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao atualizar a tarefa", 500);
         }
     }
 
-    // DELETE https://lunodoro/usuarios/{id_usuario}/tarefa/{id}
     public static function removeTask($id_usuario, $id)
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("DELETE FROM tarefa WHERE id_usuario = ? AND id = ?");
             $stmt->execute([
                 $id_usuario,
                 $id
             ]);
+            $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao remover a tarefa", 500);
         }
     }
@@ -80,6 +85,7 @@ class TaskRepository
     {
         try {
             $conn = Connection::getConnection();
+            $conn->beginTransaction();
             $stmt = $conn->prepare("SELECT dt_inicio, dt_final FROM tarefa WHERE id = ? AND id_usuario = ?");
             $stmt->execute([
                 $id,
@@ -99,12 +105,14 @@ class TaskRepository
                     $id,
                     $id_usuario
                 ]);
-
+                $conn->commit();
                 return $durationInMinutes;
             } else {
+                $conn->rollBack();
                 throw new Exception("Tarefa não concluída ou sem data final definida", 400);
             }
         } catch (PDOException $e) {
+            $conn->rollBack();
             throw new Exception("Erro ao calcular a duração da tarefa", 500);
         }
     }

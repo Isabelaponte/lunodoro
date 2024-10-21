@@ -38,14 +38,17 @@ if (validatorMethodServer('POST')) {
 }
 
 if(validatorMethodServer(("GET"))){
-    try {
-        $response = UserService::getMyData(
-            $_GET["email"],
-            $_GET["password"]
-        );
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
+    if(isset($_GET['id'])){
+        try {
+            $response = UserService::getMyData(
+                $_GET["id"]
+            );
+            output(200, $response);
+        } catch (Exception $e) {
+            output($e->getCode(), ["error" => $e->getMessage()]);
+        }
+    }else {
+        output(400, ["error" => "Parâmetros ausentes"]);
     }
 }
 

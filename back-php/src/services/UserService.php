@@ -20,7 +20,7 @@ class UserService
             throw new Exception("Usuário ou senha inválidos", 401);
         }
 
-        return $user;
+        return ["id" => $user];
     }
 
     public static function saveUser($name, $email, $password){
@@ -37,18 +37,14 @@ class UserService
             throw new Exception("Erro ao cadastrar usuario.", 500);
         }
 
-        return "Usuario criado com sucesso!";
+        return ["msg" => "Usuario criado com sucesso!"];
     }
 
-    public static function getMyData($email, $password)
+    public static function getMyData($id)
     {
-        $errors = UserValidator::validateLogin($email, $password);
 
-        if (!empty($errors)) {
-            output(400, ["errors" => $errors]);
-        }
 
-        $user = UserRepository::getUserData($email, $password);
+        $user = UserRepository::getUserData($id);
 
         if (!$user) {
             throw new Exception("Usuário ou senha inválidos", 401);
