@@ -52,3 +52,14 @@ function handleJSONInput()
 function isAValidID($id){
    return (filter_var($id, FILTER_VALIDATE_INT) && $id > 0);
 }
+
+function validateIDs($first_id, $second_id)
+    {
+        $errors = [];
+    
+        if (!isAValidID($first_id) || !isAValidID($second_id)) {
+            $errors[] = "Os IDs devem ser números inteiros positivos.";
+        }
+    
+        return $errors;
+    }    
