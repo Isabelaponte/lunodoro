@@ -8,7 +8,7 @@ class User
     private $password;
     private $dt_account_creation;
 
-    public function __construct($name, $email, $password)
+    public function __construct($email, $password, $name = null)
     {
         $this->name = $name;
         $this->email = $email;
@@ -35,7 +35,8 @@ class User
         return $this->password;
     }
 
-    public function getDtAccountCreation() {
+    public function getDtAccountCreation()
+    {
         return $this->dt_account_creation;
     }
 
@@ -49,9 +50,9 @@ class User
         $this->email = $email;
     }
 
-    public function setPassword($password){
+    public function setPassword($password)
+    {
         $this->password = $password;
     }
-}
 
-?>
+}
