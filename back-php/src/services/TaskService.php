@@ -6,15 +6,15 @@ require_once(__DIR__ . '/../config/utils.php');
 
 class TaskService
 {
-    public static function createTask($name, $description, $end_date, $status)
+    public static function createTask($name, $description, $end_date, $status, $id_lista)
     {
         $errors = TaskValidator::validate($name, $description, $end_date, $status);
 
         if (!empty($errors)) {
-            output(400, ["errors" => $errors]);
+            return output(400, ["errors" => $errors]);
         }
 
-        $response = TaskRepository::insertTaskIntoDatabase($name, $description, $end_date, $status);
+        $response = TaskRepository::insertTaskIntoDatabase($name, $description, $end_date, $status, $id_lista);
 
         if (!$response) {
             throw new Exception("Erro ao cadastrar tarefa", 500);
@@ -31,29 +31,29 @@ class TaskService
         ];
     }
 
-    public static function getAllTasks($id_user, $id_task)
+    public static function getAllTasks($id_task, $id_usuario)
     {
-        $errors = validateIDs($id_user, $id_task);
+        $errors = validateIDs($id_task, $id_usuario);
 
         if (!empty($errors)) {
             return output(400, ["errors" => $errors]);
         }
 
-        $response = TaskRepository::findTaskFromDatabase($id_user, $id_task);
+        $response = TaskRepository::findTaskFromDatabase($id_task, $id_usuario);
 
         if (!$response) {
-            throw new Exception("Não existem tarefas associadas a seu usuário", 404);
+            throw new Exception("Tarefa não encontrada", 404);
         }
 
         return [
-            "msg" => "Tarefas encontradas com sucesso!",
+            "msg" => "Tarefa encontrada com sucesso!",
             "data" => $response
         ];
     }
 
-    public static function updateTask($task_id, $user_id, $name, $description, $end_date, $status)
+    public static function updateTask($task_id, $name, $description, $end_date, $status, $id_usuario)
     {
-        $errors = validateIDs($user_id, $task_id);
+        $errors = isAValidID($task_id);
         
         if (!empty($errors)) {
             return output(400, ["errors" => $errors]);
@@ -65,7 +65,7 @@ class TaskService
             return output(400, ["errors" => $errors]);
         }
 
-        $existingTask = TaskRepository::findTaskFromDatabase($user_id, $task_id);
+        $existingTask = TaskRepository::findTaskFromDatabase($task_id, $id_usuario);
 
         if (!$existingTask) {
             output(404, ["error" => "Tarefa não encontrada"]);
@@ -80,7 +80,7 @@ class TaskService
             output(400, ["errors" => ["Nenhuma alteração foi detectada nos dados da tarefa."]]);
         }
     
-        $response = TaskRepository::updateTask($user_id, $task_id, $name, $description, $end_date, $status);
+        $response = TaskRepository::updateTask($task_id, $name, $description, $end_date, $status, $id_usuario);
     
         if (!$response) {
             throw new Exception("Erro ao atualizar a tarefa. Tente novamente mais tarde.", 500);
@@ -89,7 +89,6 @@ class TaskService
         return [
             "msg" => "Tarefa atualizada com sucesso!",
             "data" => [
-                "id_usuario" => $user_id,
                 "id" => $task_id,
                 "nome" => $name,
                 "descricao" => $description,
@@ -99,15 +98,15 @@ class TaskService
         ];
     }
     
-    public static function deleteTask($user_id, $task_id)
+    public static function deleteTask($task_id, $id_usuario)
     {
-        $errors = validateIDs($user_id, $task_id);
+        $errors = validateIDs($task_id, $id_usuario);
     
         if (!empty($errors)) {
             return output(400, ["errors" => $errors]);
         }
     
-        $response = TaskRepository::removeTask($user_id, $task_id);
+        $response = TaskRepository::removeTask($task_id, $id_usuario);
     
         if (!$response) {
             throw new Exception("Erro ao remover a tarefa. Tente novamente mais tarde.", 500);
@@ -116,7 +115,6 @@ class TaskService
         return [
             "msg" => "Tarefa removida com sucesso!",
             "data" => [
-                "id_usuario" => $user_id,
                 "id" => $task_id
             ]
         ];

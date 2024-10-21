@@ -8,14 +8,20 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
+$url = explode('/', $_SERVER['REQUEST_URI']);
+$id_usuario = isset($url[3]) ? (int)$url[3] : 0;
+$id_lista = isset($url[5]) ? (int)$url[5] : 0;
+$id_tarefa = isset($url[7]) ? (int)$url[7] : 0;
+
 if (validatorMethodServer('POST')) {
-    if (isset($_POST['nome']) && isset($_POST['descricao']) && isset($_POST['dt_final']) && isset($_POST['status'])){
+    if (isset($_POST['nome']) && isset($_POST['descricao']) && isset($_POST['dt_final']) && isset($_POST['status']) && $id_lista) {
         try {
             $response = TaskService::createTask(
                 $_POST['nome'],
                 $_POST['descricao'],
                 $_POST['dt_final'],
-                $_POST['status']
+                $_POST['status'],
+                $id_lista
             );
             output(201, $response);
         } catch (Exception $e) {
@@ -26,9 +32,9 @@ if (validatorMethodServer('POST')) {
     }
 }
 
-if (validatorMethodServer('GET') && isset($_GET['id_usuario']) && isset($_GET['id'])) {
+if (validatorMethodServer('GET') && $id_tarefa && $id_usuario) {
     try {
-        $response = TaskService::getAllTasks($_GET['id_usuario'], $_GET['id']);
+        $response = TaskService::getAllTasks($id_tarefa, $id_usuario);
         output(200, $response);
     } catch (Exception $e) {
         output($e->getCode(), ["error" => $e->getMessage()]);
@@ -37,11 +43,11 @@ if (validatorMethodServer('GET') && isset($_GET['id_usuario']) && isset($_GET['i
 
 if (validatorMethodServer('PUT')) {
     parse_str(file_get_contents("php://input"), $_PUT);
-    if (isset($_PUT['id_usuario']) && isset($_PUT['id']) && isset($_PUT['nome']) && isset($_PUT['descricao']) && isset($_PUT['dt_final']) && isset($_PUT['status'])) {
+    if ($id_tarefa && $id_usuario && isset($_PUT['nome']) && isset($_PUT['descricao']) && isset($_PUT['dt_final']) && isset($_PUT['status'])) {
         try {
             $response = TaskService::updateTask(
-                $_PUT['id'],
-                $_PUT['id_usuario'],
+                $id_tarefa,
+                $id_usuario,
                 $_PUT['nome'],
                 $_PUT['descricao'],
                 $_PUT['dt_final'],
@@ -57,11 +63,10 @@ if (validatorMethodServer('PUT')) {
 }
 
 if (validatorMethodServer('DELETE')) {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_usuario']) && isset($_DELETE['id'])) {
+    if ($id_tarefa) {
         try {
-            $response = TaskService::deleteTask($_DELETE['id_usuario'], $_DELETE['id']);
-            output(200,$response);
+            $response = TaskService::deleteTask($id_tarefa, $id_usuario);
+            output(200, $response);
         } catch (Exception $e) {
             output($e->getCode(), ["error" => $e->getMessage()]);
         }
