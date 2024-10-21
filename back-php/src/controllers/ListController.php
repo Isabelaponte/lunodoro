@@ -8,11 +8,16 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
+$url = explode('/', $_SERVER['REQUEST_URI']);
+$id_usuario = isset($url[3]) ? (int)$url[3] : 0;
+$id_lista = isset($url[5]) ? (int)$url[5] : 0;
+
+
 if (validatorMethodServer('POST')) {
-    if (isset($_POST['id_usuario']) && isset($_POST['nome_lista']) && isset($_POST['descricao']) && isset($_POST['id_tipo_lista'])) {
+    if (isset($_POST['nome_lista']) && isset($_POST['descricao']) && isset($_POST['id_tipo_lista'])) {
         try {
             $response = ListService::createList(
-                $_POST['id_usuario'],
+                $id_usuario,
                 $_POST['nome_lista'],
                 $_POST['descricao'],
                 $_POST['id_tipo_lista']
@@ -26,22 +31,22 @@ if (validatorMethodServer('POST')) {
     }
 }
 
-if (validatorMethodServer('GET') && isset($_GET['id_usuario'])) {
+if (validatorMethodServer('GET') && $id_usuario) {
     try {
-        $response = ListService::getAllLists($_GET['id_usuario']);
+        $response = ListService::getAllLists($id_usuario);
         output(200, $response);
     } catch (Exception $e) {
         output($e->getCode(), ["error" => $e->getMessage()]);
     }
 }
 
-if (validatorMethodServer('PUT')) {
+if (validatorMethodServer('PUT') && $id_lista && $id_usuario) {
     parse_str(file_get_contents("php://input"), $_PUT);
-    if (isset($_PUT['id_usuario']) && isset($_PUT['id']) && isset($_PUT['nome_lista']) && isset($_PUT['descricao']) && isset($_PUT['id_tipo_lista'])) {
+    if (isset($_PUT['nome_lista']) && isset($_PUT['descricao']) && isset($_PUT['id_tipo_lista'])) {
         try {
             $response = ListService::updateList(
-                $_PUT['id_usuario'],
-                $_PUT['id'],
+                $id_usuario,
+                $id_lista,
                 $_PUT['nome_lista'],
                 $_PUT['descricao'],
                 $_PUT['id_tipo_lista']
@@ -55,17 +60,12 @@ if (validatorMethodServer('PUT')) {
     }
 }
 
-if (validatorMethodServer('DELETE')) {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if (isset($_DELETE['id_usuario']) && isset($_DELETE['id'])) {
-        try {
-            $response = ListService::deleteList($_DELETE['id_usuario'], $_DELETE['id']);
-            output(200,$response);
-        } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
-        }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
+if (validatorMethodServer('DELETE') && $id_lista) {
+    try {
+        $response = ListService::deleteList($id_usuario, $id_lista);
+        output(200, $response);
+    } catch (Exception $e) {
+        output($e->getCode(), ["error" => $e->getMessage()]);
     }
 }
 

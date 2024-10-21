@@ -1,0 +1,13 @@
+RewriteEngine On 
+
+RewriteRule ^tipoLista$ ./back-php/src/controllers/TypeListController.php [L,NC]
+
+RewriteRule ^usuarios$ ./back-php/src/controllers/UserController.php [L,NC]
+
+RewriteRule ^usuarios/login$ ./back-php/src/controllers/UserController.php?action=login [L,NC]
+
+RewriteRule ^usuarios/([0-9]+)/lista$ ./back-php/src/controllers/ListController.php?id_usuario=$1 [L,NC]
+
+RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)$ ./back-php/src/controllers/ListController.php?id_usuario=$1&?id=$2 [L,NC]
+
+
