@@ -1,7 +1,12 @@
 <?php
 
+<<<<<<< HEAD
 require_once(__DIR__ . '/../repositories/TaskListRepository.php');
 require_once(__DIR__ . '/../config/utils.php');
+=======
+require_once(__DIR__ . "/../repositories/TaskListRepository.php");
+require_once(__DIR__ . "/../config/utils.php");
+>>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
 
 class TaskListService
 {
