@@ -80,11 +80,8 @@ class TaskService
             output(400, ["errors" => ["Nenhuma alteração foi detectada nos dados da tarefa."]]);
         }
     
-        $response = TaskRepository::updateTask($task_id, $name, $description, $end_date, $status, $id_usuario);
+        TaskRepository::updateTask($id_usuario,$task_id, $name, $description, $end_date, $status);
     
-        // if (!$response) {
-        //     throw new Exception("Erro ao atualizar a tarefa. Tente novamente mais tarde.", 500);
-        // }
     
         return [
             "msg" => "Tarefa atualizada com sucesso!",
@@ -107,10 +104,6 @@ class TaskService
         }
     
         $response = TaskRepository::removeTask($task_id, $id_usuario);
-    
-        // if (!$response) {
-        //     throw new Exception("Erro ao remover a tarefa. Tente novamente mais tarde.", 500);
-        // }
     
         return [
             "msg" => "Tarefa removida com sucesso!",

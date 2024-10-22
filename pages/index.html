@@ -231,7 +231,7 @@
                 <tr>
                     <td>GET</td>
                     <td>GET <a href="http://localhost/Lunodoro/usuarios/1/lista/1/tarefa/1">usuarios/{id_usuario}/lista/{id_lista}/tarefa/{id_tarefa}</a></td>
-                    <td>Obtém os dados de uma tarefa, requer <b>id_usuario</b> como parâmetro na requisição</td>
+                    <td>Obtém os dados de uma tarefa específica, requer <b>id_usuario</b>, <b>id_lista</b> e <b>id_tarefa</b> como parâmetros na requisição</td>
                     <td>
                         <pre>{
     "msg": "Tarefa encontrada com sucesso!",
@@ -251,7 +251,7 @@
                 <tr>
                     <td>POST</td>
                     <td>POST <a href="http://localhost/Lunodoro/usuarios/1/lista/1/tarefa">usuarios/{id_usuario}/lista/{id_lista}/tarefa</a></td>
-                    <td>Cria uma nova tarefa e associa ela a uma lista, requer <b>id_usuario</b>, <b>nome_lista</b>, <b>descrição</b>, <b>id_tipo_lista</b></td>
+                    <td>Cria uma nova tarefa, requer <b>nome</b>, <b>descrição</b>, <b>dt_final</b>, <b>status</b>, e <b>id_lista</b></td>
                     <td>
                         <pre>
 {
@@ -267,35 +267,34 @@
                 </tr>
                 <tr>
                     <td>PUT</td>
-                    <td>PUT <a href="http://localhost/Lunodoro/usuarios/1/lista/1/tarefa/1">usuarios/{id_usuario}/lista/{id}</a></td>
-                    <td>Altera os dados de uma lista, requer <b>id_usuario</b>, <b>id</b>, <b>nome_lista</b>, <b>descrição</b>, <b>id_tipo_lista</b></td>
+                    <td>PUT <a href="http://localhost/Lunodoro/usuarios/2/lista/1/tarefa/1">usuarios/{id_usuario}/lista/{id}</a></td>
+                    <td>Atualiza os dados de uma tarefa, requer <b>id_usuario</b>, <b>id_lista</b>, <b>id_tarefa</b>, <b>nome</b>, <b>descrição</b>, <b>dt_final</b>, e <b>status</b></td>
                     <td>
                         <pre>
-    {
-        "msg": "Lista atualizada com sucesso!",
-        "data": {
-            "id_usuario": "2",
-            "id": "2",
-            "nome_lista": "Microsserviço com GO e Kafka",
-            "descricao": "Construindo microsserviços com Golang e Kafka",
-            "id_tipo_lista": "2"
-        }
-    }</pre>
+{
+    "msg": "Tarefa atualizada com sucesso!",
+    "data": {
+        "id": 1,
+        "nome": "Fazer validação de rotas PHP",
+        "descricao": "Testando API com Postman",
+        "dt_final": "2024-11-02 12:00:00",
+        "status": "concluida"
+    }
+}</pre>
                     </td>
                 </tr>
                 <tr>
                     <td>DELETE</td>
                     <td>DELETE <a href="http://localhost/Lunodoro/usuarios/2/lista/1/tarefa/2">usuarios/{id_usuario}/lista/{id}</a></td>
-                    <td>Remove uma lista, requer <b>id_usuario</b>, <b>id</b> como parâmetros na requisição</td>
+                    <td>Remove uma tarefa, requer <b>id_usuario</b>, <b>id_lista</b> e <b>id_tarefa</b> como parâmetros</td>
                     <td>
                         <pre>
-    {
-        "msg": "Lista removida com sucesso!",
-        "data": {
-            "id_usuario": "1",
-            "id": "5"
-        }
-    }</pre>
+ {
+    "msg": "Tarefa removida com sucesso!",
+    "data": {
+        "id": 3
+    }
+}</pre>
                     </td>
                 </tr>
             </tbody>
