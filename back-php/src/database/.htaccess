@@ -1,0 +1,5 @@
+<LimitExcept GET POST PUT DELETE>
+    Require all granted
+</LimitExcept>
+
+Deny from all
