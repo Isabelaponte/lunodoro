@@ -7,7 +7,7 @@ class Connection
         $hostname = "localhost";
         $database = "lunodoro";
         $username = "root";
-        $password = "As45Wd678Ty@";
+        $password = "";
         $dsn = "mysql:host=$hostname;dbname=$database";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

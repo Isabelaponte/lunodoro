@@ -18,16 +18,18 @@ RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)$ ./back-php/src/controllers/ListCo
 
 #tarefa
 
-# RewriteRule ^usuarios/([0-9]+)/tarefa$ ./back-php/src/controllers/TaskController.php?id [L,NC]
-
-# RewriteRule ^usuarios/([0-9]+)/tarefa/([0-9]+)$ ./back-php/src/controllers/TaskController.php [L,NC]
-
-#lista de tarefas
-
 RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2 [L,NC]
 
 RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa/([0-9]+)$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
 
 
-#foco
+#lista de tarefas
+
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
+
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas/([0-9]+)$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
+
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/foco$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
+
+RewriteRule ^usuarios/([0-9]+)/tarefas/concluidas/tiposListas$ ./back-php/src/controllers/TaskListController.php?id_lista=$1&id_tarefa=$2 [L,NC]
 

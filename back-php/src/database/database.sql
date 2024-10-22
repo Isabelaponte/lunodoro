@@ -55,59 +55,18 @@ create table
 
 show tables;
 
--- Inserir usuario
-insert into usuario (nome_usuario, email, senha) values ('guilherme', 'guilherme@gmail.com', '123456');
-insert into usuario (nome_usuario, email, senha) values ('isabela', 'isabela@gmail.com', '123456');
-insert into usuario (nome_usuario, email, senha) values ('ryan', 'ryan@gmail.com', '123456');
-
 -- inserir tipos de lista
 insert into tipo_lista (descricao) values ('pessoal');
 insert into tipo_lista (descricao) values ('trabalho');
 insert into tipo_lista (descricao) values ('estudo');
 insert into tipo_lista (descricao) values ('outros');
 
-SELECT l.id, l.id_usuario, l.nome_lista, l.descricao, l.id_tipo_lista, t.descricao,l.dt_criacao, l.dt_atualizacao
-FROM lista l INNER JOIN tipo_lista t ON l.id_tipo_lista = t.id;
+INSERT INTO `usuario` (`id`, `nome_usuario`, `email`, `senha`, `dt_criacao_conta`) VALUES
+(1, 'Guilherme', 'Gui@example.com', '$2y$10$qtxa9lACNlM4E2xy/aCU4OoDMZiPKBBr8.5uSayIPCKMafXVHYlxG', '2024-10-21 01:49:43'),
+(2, 'Isabela', 'Isabela@example.com', '$2y$10$eUHfTEEdhERy2C08xQSY4O.Zw0X08hDlEYSN23VDkQBqaPt8MSIIi', '2024-10-21 01:50:03'),
+(3, 'Ryan', 'Ryan@example.com', '$2y$10$hKz20k6FNxHQngjKQ6E2meVxSFJix7GziBnzA3G/b.ri8s8TAfEXK', '2024-10-21 01:50:12');
 
--- Inserir listas
-insert into lista (id_usuario, nome_lista, descricao, id_tipo_lista) values ((select id from usuario where email = 'guilherme@gmail.com'), 'Lista de Tarefas', 'Tarefas diárias', (select id from tipo_lista where descricao = 'pessoal'));
-insert into lista (id_usuario, nome_lista, descricao, id_tipo_lista) values ((select id from usuario where email = 'isabela@gmail.com'), 'Projetos de Trabalho', 'Projetos em andamento', (select id from tipo_lista where descricao = 'trabalho'));
-insert into lista (id_usuario, nome_lista, descricao, id_tipo_lista) values ((select id from usuario where email = 'ryan@gmail.com'), 'Estudos', 'Materiais de estudo', (select id from tipo_lista where descricao = 'estudo'));
-
--- Inserir tarefas
-insert into tarefa (nome, descricao, dt_final, duracao, status) values 
-('Comprar mantimentos', 'Comprar frutas e vegetais', '2024-09-10 12:00:00', 120, 'em processo'),
-('Reunião com cliente', 'Reunião para discutir requisitos','2024-09-11 15:00:00', 60, 'concluída'),
-('Ler capítulo 5', 'Ler o capítulo 5 do livro de matemática','2024-09-12 11:00:00', 120, 'em processo');
-
--- Inserir relacionamentos entre listas e tarefas
-insert into lista_tarefa (id_lista, id_tarefa) values 
-((select id from lista where nome_lista = 'Lista de Tarefas' and id_usuario = (select id from usuario where email = 'guilherme@gmail.com')), 
- (select id from tarefa where nome = 'Comprar mantimentos')),
-((select id from lista where nome_lista = 'Projetos de Trabalho' and id_usuario = (select id from usuario where email = 'isabela@gmail.com')), 
- (select id from tarefa where nome = 'Reunião com cliente')),
-((select id from lista where nome_lista = 'Estudos' and id_usuario = (select id from usuario where email = 'ryan@gmail.com')), 
- (select id from tarefa where nome = 'Ler capítulo 5'));
-
-insert into lista_tarefa (id_lista, id_tarefa) values 
-(select id from lista where nome_lista = 'Lista de Tarefas' and id_usuario = (select id from usuario where email = 'guilherme@gmail.com')), 
- (select id from tarefa where nome = 'Comprar mantimentos');
-
--- Testes de inserção e validação de dados
-select * from usuario;
-select * from lista;
-select * from tarefa;
-select * from lista_tarefa;
-
-SELECT round(SUM(t.duracao), 2) AS "Tempo de foco" FROM lista_tarefa lt
-INNER JOIN tarefa t ON lt.id_tarefa = t.id
-INNER JOIN lista l ON lt.id_lista = l.id
-INNER JOIN usuario u ON l.id_usuario = u.id
-WHERE u.id = 1;
-
--- Se tudo der errado
-/*delete from lista_tarefa;
-delete from tarefa;
-delete from lista;
-delete from usuario;*/
-
+INSERT INTO `lista` (`id`, `id_usuario`, `nome_lista`, `descricao`, `id_tipo_lista`, `dt_criacao`, `dt_atualizacao`) VALUES
+(1, 1, 'Estudando TypeScript', 'Utilizando generics e decorator na prática', 1, '2024-10-21 01:56:46', '2024-10-21 01:56:46'),
+(2, 2, 'Microsserviço com GO e Kafka', 'Construindo microsserviços com Golang e Kafka', 2, '2024-10-21 01:58:28', '2024-10-21 02:24:41'),
+(3, 3, 'Testes automatizados com selenium', 'Criando testes automatizados com Selenium', 1, '2024-10-21 02:00:07', '2024-10-21 02:00:07');
