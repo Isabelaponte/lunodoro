@@ -53,7 +53,7 @@ class TaskService
 
     public static function updateTask($task_id, $name, $description, $end_date, $status, $id_usuario)
     {
-        $errors = isAValidID($task_id);
+        $errors = validateIDs($task_id, $id_usuario);
         
         if (!empty($errors)) {
             return output(400, ["errors" => $errors]);
@@ -82,9 +82,9 @@ class TaskService
     
         $response = TaskRepository::updateTask($task_id, $name, $description, $end_date, $status, $id_usuario);
     
-        if (!$response) {
-            throw new Exception("Erro ao atualizar a tarefa. Tente novamente mais tarde.", 500);
-        }
+        // if (!$response) {
+        //     throw new Exception("Erro ao atualizar a tarefa. Tente novamente mais tarde.", 500);
+        // }
     
         return [
             "msg" => "Tarefa atualizada com sucesso!",
@@ -108,9 +108,9 @@ class TaskService
     
         $response = TaskRepository::removeTask($task_id, $id_usuario);
     
-        if (!$response) {
-            throw new Exception("Erro ao remover a tarefa. Tente novamente mais tarde.", 500);
-        }
+        // if (!$response) {
+        //     throw new Exception("Erro ao remover a tarefa. Tente novamente mais tarde.", 500);
+        // }
     
         return [
             "msg" => "Tarefa removida com sucesso!",

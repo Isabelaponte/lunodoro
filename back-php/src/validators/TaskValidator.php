@@ -18,7 +18,7 @@ class TaskValidator
             $errors[] = "A data de término deve estar no formato Y-m-d H:i:s.";
         }
 
-        $validStatuses = ['not started', 'in progress', 'completed', 'on hold'];
+        $validStatuses = ['em processo', 'concluida', 'lista vazia'];
         if (!in_array($status, $validStatuses)) {
             $errors[] = "O status deve ser um dos seguintes: " . implode(', ', $validStatuses) . ".";
         }

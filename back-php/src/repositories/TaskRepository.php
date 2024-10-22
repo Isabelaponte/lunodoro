@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../database/Connection.php');
-require_once(__DIR__ . './TaskListRepository.php');
+require_once(__DIR__ . '/TaskListRepository.php');
 
 class TaskRepository
 {
@@ -116,7 +116,7 @@ class TaskRepository
 
                 $updateStmt = $conn->prepare("
                     UPDATE tarefa 
-                    SET duracao = ?, status = 'concluída' 
+                    SET duracao = ?, status = 'concluida' 
                     WHERE id = ?
                 ");
                 $updateStmt->execute([$durationInMinutes, $id_tarefa]);

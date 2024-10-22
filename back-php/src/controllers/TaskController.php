@@ -47,11 +47,12 @@ if (validatorMethodServer('PUT')) {
         try {
             $response = TaskService::updateTask(
                 $id_tarefa,
-                $id_usuario,
                 $_PUT['nome'],
                 $_PUT['descricao'],
                 $_PUT['dt_final'],
-                $_PUT['status']
+                $_PUT['status'],
+                $id_usuario
+
             );
             output(200, $response);
         } catch (Exception $e) {
@@ -63,7 +64,7 @@ if (validatorMethodServer('PUT')) {
 }
 
 if (validatorMethodServer('DELETE')) {
-    if ($id_tarefa) {
+    if ($id_tarefa && $id_usuario) {
         try {
             $response = TaskService::deleteTask($id_tarefa, $id_usuario);
             output(200, $response);
