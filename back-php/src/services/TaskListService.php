@@ -1,8 +1,7 @@
 <?php
 
-require_once(__DIR__ . '/../repositories/TaskListRepository.php');
-require_once(__DIR__ . '/../validators/TaskListValidator.php');
-require_once(__DIR__ . '/../config/utils.php');
+require_once(__DIR__ . "/../repositories/TaskListRepository.php");
+require_once(__DIR__ . "/../config/utils.php");
 
 class TaskListService
 {
