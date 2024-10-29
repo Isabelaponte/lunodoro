@@ -21,6 +21,7 @@ export const CardHeader = styled.header`
 
 export const CardTitle = styled.h2`
   font-size: 1.25rem;
+  color: ${({ theme }) => theme.colors.textColorSecondary};
   margin: 0!important;
 `;
 
@@ -66,4 +67,15 @@ export const DeleteButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   max-width: fit-content;
+`;
+
+export const CardFooter = styled.footer`
+  display: flex;
+  justify-content: end;
+`;
+
+export const CardFooterText = styled.p`
+  font-size: 0.8rem;
+  margin: 0!important;
+  color: ${({ theme }) => theme.colors.textPlaceholderColor};
 `;

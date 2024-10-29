@@ -11,6 +11,7 @@ declare module 'styled-components' {
     colors: {
       bgColor: string,
       textColor: string,
+      textColorSecondary: string,
       textPlaceholderColor: string,
       bgInput: string,
       linkColor: string,

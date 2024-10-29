@@ -11,6 +11,7 @@ const AppRouter = () => {
         <Route path="" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="task-list" element={<TaskList />} />
+        <Route path="task-list/:taskId" element={<TaskList />} />
       </Route>
     </Routes>
   );

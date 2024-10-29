@@ -8,7 +8,10 @@ import {
   StyledCardTask,
   CardHeader,
   OptionsButtonDiv,
+  CardFooter,
+  CardFooterText,
 } from "./CardTask.styles";
+import { Link } from "react-router-dom";
 
 const CardTask = () => {
   return (
@@ -25,9 +28,14 @@ const CardTask = () => {
             </IconButton>
           </OptionsButtonDiv>
         </CardHeader>
-        <CardTitle>Tarefa 1</CardTitle>
+        <Link to={"/task-list"}>
+          <CardTitle>Tarefa 1</CardTitle>
+        </Link>
         <CardP>Descrição da tarefa</CardP>
         <CardP>Tipo: Trabalho</CardP>
+        <CardFooter>
+          <CardFooterText>Criado em 12/12/2022</CardFooterText>
+        </CardFooter>
       </StyledCardTask>
     </>
   );

@@ -10,7 +10,8 @@ const theme: DefaultTheme = {
   colors: {
     bgColor: '#321c46',
     textColor: '#f5f5f5',
-    textPlaceholderColor: '#a9a9a9',
+    textColorSecondary: '#321c46',
+    textPlaceholderColor: '#6c757d',
     bgInput: '#d9d9d9',
     linkColor: '#633ce0',
     accentColor: '#633ce0',
