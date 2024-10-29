@@ -10,11 +10,26 @@ const theme: DefaultTheme = {
   colors: {
     bgColor: '#321c46',
     textColor: '#f5f5f5',
+    textPlaceholderColor: '#a9a9a9',
     bgInput: '#d9d9d9',
     linkColor: '#633ce0',
     accentColor: '#633ce0',
     primaryButton: '#633ce0',
     secondaryButton: '#321c46',
+    chips: {
+      inProgress: {
+        backgroundColor: '#e0c48f',
+        color: '#974a02',
+      },
+      completed: {
+        backgroundColor: '#95ea76',
+        color: '#235d0e',
+      },
+      empty: {
+        backgroundColor: '#d9d9d9',
+        color: '#6c757d',
+      }
+    }
   },
 };
 
