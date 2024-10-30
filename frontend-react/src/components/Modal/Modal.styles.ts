@@ -27,7 +27,7 @@ export const StyledModals = styled(Modal)`
 export const ModalContainer = styled.section`
   background-color: ${({ theme }) => theme.colors.textColor};
   max-height: 90%;
-  width: 820px;
+  width: 600px;
   overflow: hidden;
   padding: 44px 0px 44px 44px;
   border-radius: 8px;
