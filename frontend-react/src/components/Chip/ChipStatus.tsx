@@ -1,10 +1,5 @@
+import { ChipType } from "../../utils/enums/status.enum";
 import { ChipContainer } from "./ChipStatus.styles";
-
-export enum ChipType {
-  IN_PROGRESS,
-  COMPLETED,
-  EMPTY,
-}
 
 export interface ChipStatusProps {
   type: ChipType;

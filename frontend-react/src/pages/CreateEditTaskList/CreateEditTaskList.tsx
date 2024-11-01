@@ -1,15 +1,20 @@
 import * as yup from "yup";
 import { useFormUtils } from "../../utils/form.utils";
 import { MenuItem, TextField } from "@mui/material";
-import { CancelButton, DivOptions, Form } from "./CreateTaskList.styles";
+import { CancelButton, DivOptions, Form, SpanInfo } from "./CreateTaskList.styles";
 import { StyledButton } from "../../components/CardTask/CardTask.styles";
 import { Controller } from "react-hook-form";
+import { Mode } from "../../utils/enums/mode.enum";
 
 interface CreateTaskListProps {
   onClose: () => void;
+  mode?: Mode;
 }
 
-const CreateTaskList = ({ ...props }: CreateTaskListProps) => {
+const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
+
+  //TODO: ao carregar no modo editar, terá que buscar o id da lista e preencher os campos
+
   const schema = yup.object({
     name: yup.string().required("Campo obrigatório"),
     description: yup.string(),
@@ -25,7 +30,12 @@ const CreateTaskList = ({ ...props }: CreateTaskListProps) => {
   console.log(errors);
   const onSubmit = async (data: any) => {
     await trigger();
-    //TODO: aqui terá a chamada api para criar uma nova lista de tarefas e para receber os valores do select (confirmar)
+
+    if (props.mode === Mode.CREATE) {
+      //TODO: aqui terá a chamada api para criar uma nova lista de tarefas e para receber os valores do select (confirmar)
+    } else {
+      //TODO: aqui terá a chamada api para criar uma editar uma lista de tarefas e para receber os valores do select (confirmar)
+    }
   };
 
   return (
@@ -71,6 +81,8 @@ const CreateTaskList = ({ ...props }: CreateTaskListProps) => {
         )}
       />
 
+      <SpanInfo>*Acesse a lista para adicionar tarefas</SpanInfo>
+
       <DivOptions>
         <StyledButton type="submit">Criar</StyledButton>
         <CancelButton type="button" onClick={props.onClose}>
@@ -81,4 +93,4 @@ const CreateTaskList = ({ ...props }: CreateTaskListProps) => {
   );
 };
 
-export default CreateTaskList;
+export default CreateEditTaskList;

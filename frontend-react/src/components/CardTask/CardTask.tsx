@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ChipStatus, { ChipType } from "../Chip/ChipStatus";
+import ChipStatus from "../Chip/ChipStatus";
 import {
   CardTitle,
   CardP,
@@ -12,15 +12,20 @@ import {
   CardFooterText,
 } from "./CardTask.styles";
 import { Link } from "react-router-dom";
+import { ChipType } from "../../utils/enums/status.enum";
 
-const CardTask = () => {
+interface CardTaskProps {
+  onOpenEditModal: () => void;
+}
+
+const CardTask = ({...props} : CardTaskProps) => {
   return (
     <>
       <StyledCardTask>
         <CardHeader>
           <ChipStatus type={ChipType.IN_PROGRESS} />
           <OptionsButtonDiv>
-            <IconButton aria-label="editar">
+            <IconButton onClick={props.onOpenEditModal} aria-label="editar">
               <EditIcon />
             </IconButton>
             <IconButton aria-label="deletar">

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-import { ChipStatusProps, ChipType } from './ChipStatus';
+import { ChipStatusProps } from './ChipStatus';
+import { ChipType } from '../../utils/enums/status.enum';
 
 const getChipStyles = (type: ChipType) => {
   switch (type) {

@@ -2,22 +2,29 @@ import { useState } from "react";
 import CardTask from "../../components/CardTask/CardTask";
 import Modals from "../../components/Modal/Modal";
 import { ContainerTaskList, StyledButton } from "./TaskList.styles";
-import CreateTaskList from "../CreateTaskList/CreateTaskList";
+import CreateEditTaskList from "../CreateEditTaskList/CreateEditTaskList";
+import { Mode } from "../../utils/enums/mode.enum";
 
 const TaskList = () => {
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   return (
     <>
-      <Modals open={openModal} name={"Adicionar nova lista"} onClose={() => setOpenModal(false)}>
-        <CreateTaskList onClose={() => setOpenModal(false)} />
+      <Modals open={openCreateModal} name={"Adicionar nova lista"} onClose={() => setOpenCreateModal(false)}>
+        <CreateEditTaskList onClose={() => setOpenCreateModal(false)} mode={Mode.CREATE}/>
       </Modals>
+
+      <Modals open={openEditModal} name={"Editar lista"} onClose={() => setOpenEditModal(false)}>
+        <CreateEditTaskList onClose={() => setOpenEditModal(false)} mode={Mode.EDIT} />
+      </Modals>
+
       <ContainerTaskList>
         <h1>Lista de Tarefas</h1>
-        <StyledButton onClick={() => setOpenModal(true)}>Criar nova tarefa</StyledButton>
+        <StyledButton onClick={() => setOpenCreateModal(true)}>Criar nova tarefa</StyledButton>
 
-        <CardTask />
+        <CardTask onOpenEditModal={() => setOpenEditModal(true)} />
       </ContainerTaskList>
     </>
   );

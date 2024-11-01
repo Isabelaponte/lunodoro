@@ -22,3 +22,9 @@ export const DivOptions = styled.div`
   display: flex;
   gap: 1rem;
 `;
+
+export const SpanInfo = styled.span`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.textPlaceholderColor};
+  text-align: center;
+`;
