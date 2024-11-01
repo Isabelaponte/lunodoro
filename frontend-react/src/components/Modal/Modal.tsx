@@ -23,7 +23,6 @@ const Modals = ({ children, ...props }: IModalProps) => {
           <IconButton
             data-testid="close-modal"
             onClick={props.onClose}
-            sx={{ marginRight: "44px" }}
           >
             <Close />
           </IconButton>

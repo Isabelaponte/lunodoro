@@ -29,7 +29,7 @@ export const ModalContainer = styled.section`
   max-height: 90%;
   width: 600px;
   overflow: hidden;
-  padding: 44px 0px 44px 44px;
+  padding: 44px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;

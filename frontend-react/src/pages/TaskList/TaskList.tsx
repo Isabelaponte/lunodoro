@@ -11,7 +11,7 @@ const TaskList = () => {
   return (
     <>
       <Modals open={openModal} name={"Adicionar nova lista"} onClose={() => setOpenModal(false)}>
-        <CreateTaskList />
+        <CreateTaskList onClose={() => setOpenModal(false)} />
       </Modals>
       <ContainerTaskList>
         <h1>Lista de Tarefas</h1>

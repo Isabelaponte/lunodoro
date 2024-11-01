@@ -40,6 +40,7 @@ background-color: ${({ theme }) => theme.colors.bgColor};
   cursor: pointer;
   transition: all 0.3s ease;
   max-width: fit-content;
+  min-width: 100px;
 `;
 
 export const OptionsButtonDiv = styled.div`
