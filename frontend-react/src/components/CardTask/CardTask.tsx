@@ -16,19 +16,20 @@ import { ChipType } from "../../utils/enums/status.enum";
 
 interface CardTaskProps {
   onOpenEditModal: () => void;
+  onOpenDeleteModal: () => void;
 }
 
-const CardTask = ({...props} : CardTaskProps) => {
+const CardTask = ({ ...props }: CardTaskProps) => {
   return (
     <>
       <StyledCardTask>
         <CardHeader>
           <ChipStatus type={ChipType.IN_PROGRESS} />
           <OptionsButtonDiv>
-            <IconButton onClick={props.onOpenEditModal} aria-label="editar">
+            <IconButton onClick={props.onOpenEditModal}>
               <EditIcon />
             </IconButton>
-            <IconButton aria-label="deletar">
+            <IconButton onClick={props.onOpenDeleteModal}>
               <DeleteIcon />
             </IconButton>
           </OptionsButtonDiv>
