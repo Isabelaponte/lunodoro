@@ -15,9 +15,23 @@ export const StyledHeader = styled.header`
 export const HeaderLink= styled.p`
   color: ${({ theme }) => theme.colors.textColor};
   font-size: 1rem;
+  padding: 1rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+`;
+
+export const HeaderLinkLogin = styled(HeaderLink)`
+  background-color: aliceblue;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: ${({ theme }) => theme.colors.textColorSecondary};
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.textColor};
+    background-color: ${({ theme }) => theme.colors.bgBackground};
+  }
 `;
 
 export const H1 = styled.h1`

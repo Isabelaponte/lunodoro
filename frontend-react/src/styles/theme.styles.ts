@@ -9,11 +9,12 @@ const theme: DefaultTheme = {
   },
   colors: {
     bgColor: '#321c46',
+    bgBackground: '#65398c',
     textColor: '#f5f5f5',
     textColorSecondary: '#321c46',
     textPlaceholderColor: '#6c757d',
     bgInput: '#d9d9d9',
-    linkColor: '#633ce0',
+    linkColor: '#c6aee4',
     accentColor: '#633ce0',
     primaryButton: '#633ce0',
     secondaryButton: '#321c46',

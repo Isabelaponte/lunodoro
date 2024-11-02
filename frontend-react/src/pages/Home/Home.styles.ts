@@ -5,6 +5,7 @@ import styled from 'styled-components';
 export const StyledContainerHome = styled(Container)`
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 64px 0;
 `;
 

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Div, H1, HeaderLink, ImageLogo, StyledHeader } from "./Header.styles";
+import { Div, H1, HeaderLink, HeaderLinkLogin, ImageLogo, StyledHeader } from "./Header.styles";
 import logo from "../../assets/img/logo.png";
 
 const Header = () => {
@@ -24,7 +24,7 @@ const Header = () => {
         <HeaderLink>Sobre</HeaderLink>
       </Link>
       <Link to={"/login"}>
-        <HeaderLink>Login</HeaderLink>
+        <HeaderLinkLogin>Login</HeaderLinkLogin>
       </Link>
     </StyledHeader>
   );

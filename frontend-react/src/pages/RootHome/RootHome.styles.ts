@@ -10,7 +10,7 @@ export const StyledContainerContent = styled.div`
   padding: 32px 32px 32px 16px;
 `;
 
-export const StyledMain = styled.div`
+export const StyledMain = styled.main`
   margin-top: 49px;
   flex: 1;
 `;

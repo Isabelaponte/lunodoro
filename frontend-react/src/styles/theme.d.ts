@@ -10,6 +10,7 @@ declare module 'styled-components' {
     },
     colors: {
       bgColor: string,
+      bgBackground: string,
       textColor: string,
       textColorSecondary: string,
       textPlaceholderColor: string,

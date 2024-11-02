@@ -7,7 +7,6 @@ import {
   ModalFooter,
   ModalWrapper,
 } from "./ModalConfirmBase.styles";
-import { ModalHeader } from "../Modal/Modal.styles";
 import { Close } from "@mui/icons-material";
 import { StyledButton } from "../CardTask/CardTask.styles";
 import { CancelButton } from "../../pages/CreateEditTaskList/CreateTaskList.styles";

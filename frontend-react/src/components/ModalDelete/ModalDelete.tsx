@@ -19,6 +19,7 @@ const ModalDelete = ({
   id,
 }: ModalDeleteProps) => {
 
+  //TODO: add logica de deletar a api
   const confirmDelete = async () => {
     // await queryFn(id);
     onClose();
