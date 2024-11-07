@@ -5,6 +5,7 @@ import RootHome from "../pages/RootHome/RootHome";
 import TaskList from "../pages/TaskList/TaskList";
 import SignUp from "../pages/SignUp/SignUp";
 import ReportPage from "../pages/ReportPage/ReportPage";
+import AboutPage from "../pages/AboutPage/AboutPage";
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
         <Route path="task-list" element={<TaskList />} />
         <Route path="task-list/:taskId" element={<TaskList />} />
         <Route path="report" element={<ReportPage />} />
+        <Route path="about" element={<AboutPage />} />
       </Route>
     </Routes>
   );

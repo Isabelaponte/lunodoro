@@ -20,7 +20,7 @@ const Header = () => {
       <Link to={"/report"}>
         <HeaderLink>Relatórios</HeaderLink>
       </Link>
-      <Link to={"/"}>
+      <Link to={"/about"}>
         <HeaderLink>Sobre</HeaderLink>
       </Link>
       <Link to={"/login"}>
