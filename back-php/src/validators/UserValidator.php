@@ -1,40 +1,41 @@
 <?php
+require_once(__DIR__ . '/../models/User.php');
 
 class UserValidator
 {
-    public static function validate($name, $email, $password, $dt_account_creation = null)
+    public static function validate(User $user)
     {
         $errors = [];
 
-        if (self::isNullOrEmpty($name) || !is_string($name)) {
-            $errors[] = "O nome deve ser uma string nao vazia.";
+        if (self::isNullOrEmpty($user->getUserName()) || !is_string($user->getUserName())) {
+            $errors[] = "O nome deve ser uma string não vazia.";
         }
 
-        if (self::isNullOrEmpty($email) || self::isAInvalidEmail($email)) {
-            $errors[] = "Campo email vazio ou invalido.";
+        if (self::isNullOrEmpty($user->getEmail()) || self::isAInvalidEmail($user->getEmail())) {
+            $errors[] = "Campo email vazio ou inválido.";
         }
 
-        if (empty($password) || !self::validateMinimumPasswordLength($password)) {
-            $errors[] = "A senha e obrigatoria e deve ter pelo menos 6 caracteres.";
+        if (empty($user->getPassword()) || !self::validateMinimumPasswordLength($user->getPassword())) {
+            $errors[] = "A senha é obrigatória e deve ter pelo menos 6 caracteres.";
         }
 
-        if ($dt_account_creation !== null && !self::validateDate($dt_account_creation)) {
-            $errors[] = "A data de criacao da conta deve estar no formato Y-m-d H:i:s.";
+        if (!self::isNullOrEmpty($user->getDtAccountCreation()) && !self::validateDate($user->getDtAccountCreation())) {
+            $errors[] = "A data de criação da conta deve estar no formato Y-m-d H:i:s.";
         }
 
         return $errors;
     }
 
-    public static function validateLogin($email, $password)
+    public static function validateLogin(User $user)
     {
         $errors = [];
 
-        if (self::isNullOrEmpty($email) || self::isAInvalidEmail($email)) {
-            $errors[] = "Campo email vazio ou invalido.";
+        if (self::isNullOrEmpty($user->getEmail()) || self::isAInvalidEmail($user->getEmail())) {
+            $errors[] = "Campo email vazio ou inválido.";
         }
 
-        if (self::isNullOrEmpty($password)) {
-            $errors[] = "Campo senha obrigatorio.";
+        if (self::isNullOrEmpty($user->getPassword())) {
+            $errors[] = "Campo senha obrigatório.";
         }
 
         return $errors;
@@ -48,7 +49,7 @@ class UserValidator
 
     private static function validateMinimumPasswordLength($password)
     {
-        return (strlen($password) >= 6) ? true :  false;
+        return strlen($password) >= 6;
     }
 
     private static function isNullOrEmpty($value)
@@ -59,5 +60,6 @@ class UserValidator
     private static function isAInvalidEmail($email)
     {
         return !filter_var($email, FILTER_VALIDATE_EMAIL);
-    } 
+    }
+    
 }
