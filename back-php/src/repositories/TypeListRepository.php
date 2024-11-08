@@ -20,7 +20,7 @@ class TypeListRepository
     {
         try {
             $conn = Connection::getConnection();
-            $stmt = $conn->prepare("SELECT id, descricao FROM tipo_lista");
+            $stmt = $conn->prepare("SELECT id, descricao FROM tipo_lista ORDER BY id");
             $stmt->execute();
             return $stmt->fetchAll();
         } catch (PDOException $e) {
