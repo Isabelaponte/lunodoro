@@ -15,11 +15,7 @@ $id_tarefa = isset($url[7]) ? (int)$url[7] : 0;
 
 
 if (validatorMethodServer('POST')) {
-<<<<<<< HEAD
     if ($id_lista && $id_tarefa){
-=======
-    if (isset($_POST['id_lista']) && isset($_POST['id_tarefa'])) {
->>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
         try {
             $response = TaskListService::createListTask(
                 $id_lista,
@@ -35,23 +31,12 @@ if (validatorMethodServer('POST')) {
     }
 }
 
-<<<<<<< HEAD
 if (validatorMethodServer('GET') && $id_usuario && $id_lista) {
     try {
         $response = TaskListService::getAllTasksByList($id_lista, $id_usuario);
         output(200, $response);
     } catch (Exception $e) {
         output($e->getCode(), ["error" => $e->getMessage()]);
-=======
-if (validatorMethodServer('GET')) {
-    if (isset($_GET['id_usuario']) && isset($_GET['id_lista'])) {
-        try {
-            $response = TaskListService::getAllTasksByList($_GET['id_lista'], $_GET['id_usuario']);
-            output(200, $response);
-        } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
-        }
->>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
     }
     if (isset($_GET['id_tarefa']) && isset($_GET['id_usuario'])) {
         try {

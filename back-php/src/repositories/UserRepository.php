@@ -33,7 +33,7 @@ class UserRepository
 {
     try {
         $conn = self::getConnection();
-        $stmt = $conn->prepare("SELECT id, nome_usuario, email, dt_criacao_conta FROM usuario WHERE id = ?");
+        $stmt = $conn->prepare("SELECT nome_usuario, senha, email, dt_criacao_conta FROM usuario WHERE id = ?");
         $stmt->execute([$id]);
         $userData = $stmt->fetch();
         

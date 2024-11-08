@@ -1,35 +1,42 @@
 RewriteEngine On 
+RewriteBase /Lunodoro/back-php/
+
+#usuário
+
+RewriteRule ^usuarios/([0-9]+)$ src/controllers/userController.php?id=$1 [L,NC]
+
+RewriteRule ^usuarios/login$ src/controllers/userController.php [L,NC]
+
+RewriteRule ^usuarios$ src/controllers/userController.php [L,NC]
+
 
 #tipo de lista
 
-RewriteRule ^tipoLista$ ./back-php/src/controllers/TypeListController.php [L,NC]
+RewriteRule ^tipoLista/([0-9]+)$ src/controllers/TypeListController.php?id=$1 [L,NC]
 
-#usuario
+RewriteRule ^tipoLista/([a-zA-Z]+)$ src/controllers/TypeListController.php?description=$1 [L,NC]
 
-RewriteRule ^usuarios$ ./back-php/src/controllers/UserController.php [L,NC]
-
-RewriteRule ^usuarios/login$ ./back-php/src/controllers/UserController.php?action=login [L,NC]
+RewriteRule ^tipoLista$ src/controllers/TypeListController.php [L,NC]
 
 #lista
 
-RewriteRule ^usuarios/([0-9]+)/lista$ ./back-php/src/controllers/ListController.php?id_usuario=$1 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/lista$ src/controllers/ListController.php?id_usuario=$1 [L,NC]
 
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)$ ./back-php/src/controllers/ListController.php?id_usuario=$1&?id=$2 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)$ src/controllers/ListController.php?id_usuario=$1&?id=$2 [L,NC]
 
 #tarefa
 
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa$ src/controllers/TaskController.php?id_usuario=$1&id_lista=$2 [L,NC]
 
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa/([0-9]+)$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa/([0-9]+)$ src/controllers/TaskController.php?id_usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
 
 
 #lista de tarefas
 
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas$ src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
 
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas/([0-9]+)$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas/([0-9]+)$ src/controllers/TaskListController.php?usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
 
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/foco$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
+RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/foco$ src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
 
-RewriteRule ^usuarios/([0-9]+)/tarefas/concluidas/tiposListas$ ./back-php/src/controllers/TaskListController.php?id_lista=$1&id_tarefa=$2 [L,NC]
-
+RewriteRule ^usuarios/([0-9]+)/tarefas/concluidas/tiposListas$ src/controllers/TaskListController.php?id_lista=$1&id_tarefa=$2 [L,NC]
