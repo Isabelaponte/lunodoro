@@ -8,19 +8,50 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-try {
-    if (validatorMethodServer('GET')) {
-        if (isset($_GET['descricao'])) {
-            $descricao = $_GET['descricao'];
-            $response = TypeListService::findTypeList($descricao);
-        } else {
-            $response = TypeListService::getAllTypeList();
-        }
-        output(200, $response);
-    } else {
-        output(400, ["error" => "Tipo de requisição não aceita"]);
+class TypeListController {
+    private TypeListService $typeListService;
+
+    public function __construct(TypeListService $typeListService) {
+        $this->typeListService = $typeListService;
     }
+
+    public function handleRequest(string $method): void {
+        try {
+            $method = strtoupper($method);
+            switch ($method) {
+                case 'GET':
+                    $this->handleGet();
+                    break;
+                default:
+                    $this->output(405, ["error" => "Método não permitido"]);
+                    break;
+            }
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function handleGet(): void {
+        $descricao = $_GET['descricao'] ?? null; 
+
+        if ($descricao) {
+            $response = $this->typeListService->findTypeList($descricao);
+        } else {
+            $response = $this->typeListService->getAllTypeList();
+        }
+
+        $this->output(200, $response);
+    }
+
+    private function output(int $statusCode, array $response): void {
+        http_response_code($statusCode);
+        echo json_encode($response);
+    }
+}
+
+try {
+    $controller = new TypeListController(new TypeListService());
+    $controller->handleRequest($_SERVER['REQUEST_METHOD']); 
 } catch (Exception $e) {
     output($e->getCode(), ["error" => $e->getMessage()]);
 }
-?>
