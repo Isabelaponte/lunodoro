@@ -9,22 +9,18 @@ class UserService
 {
     public static function getUser(User $user)
     {
-     
         $errors = UserValidator::validateLogin($user);
         if (!empty($errors)) {
             throw new Exception("Dados inválidos: " . implode(", ", $errors), 400);
         }
 
-        
+
         $userResponse = UserRepository::login($user);
         if (!$userResponse) {
             throw new Exception("Usuário ou senha inválidos", 401);
         }
-        
-        return [
-            "status" => "success",
-            "data" => ["id" => $userResponse]
-        ];
+
+        return self::generateSuccessResponse(["id" => $userResponse]);
     }
 
     public static function saveUser(User $user)
@@ -39,10 +35,7 @@ class UserService
             throw new Exception("Erro ao cadastrar usuário", 500);
         }
 
-        return [
-            "status" => "success",
-            "message" => "Usuário criado com sucesso!"
-        ];
+        return self::generateSuccessResponse([], "Usuário criado com sucesso!");
     }
 
     public static function getMyData(int $id)
@@ -52,13 +45,19 @@ class UserService
             throw new Exception("Usuário não encontrado", 404);
         }
 
+        return self::generateSuccessResponse([
+            "email" => $user->getEmail(),
+            "name" => $user->getUserName(),
+            "dt_account_creation" => $user->getDtAccountCreation()
+        ]);
+    }
+
+    private static function generateSuccessResponse(array $data = [], string $message = ''): array
+    {
         return [
             "status" => "success",
-            "data" => [
-                "email" => $user->getEmail(),
-                "name" => $user->getUserName(),
-                "dt_account_creation" => $user->getDtAccountCreation()
-            ]
+            "message" => $message,
+            "data" => $data
         ];
     }
 }
