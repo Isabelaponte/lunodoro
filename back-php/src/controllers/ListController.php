@@ -3,70 +3,152 @@
 require_once(__DIR__ . '/../validators/MethodValidator.php');
 require_once(__DIR__ . '/../services/ListService.php');
 require_once(__DIR__ . '/../config/utils.php');
+require_once(__DIR__ . '/../models/List.php');
 
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$url = explode('/', $_SERVER['REQUEST_URI']);
-$id_usuario = isset($url[3]) ? (int)$url[3] : 0;
-$id_lista = isset($url[5]) ? (int)$url[5] : 0;
+class ListController
+{
+    private ListService $listService;
 
+    public function __construct(ListService $listService)
+    {
+        $this->listService = $listService;
+    }
 
-if (validatorMethodServer('POST')) {
-    if (isset($_POST['nome_lista']) && isset($_POST['descricao']) && isset($_POST['id_tipo_lista'])) {
+    public function handleRequest(string $method): void
+    {
         try {
-            $response = ListService::createList(
-                $id_usuario,
-                $_POST['nome_lista'],
-                $_POST['descricao'],
-                $_POST['id_tipo_lista']
-            );
-            output(201, $response);
+            $method = strtoupper($method);
+            switch ($method) {
+                case 'POST':
+                    $this->handlePost();
+                    break;
+                case 'GET':
+                    $this->handleGet();
+                    break;
+                case 'PUT':
+                    $this->handlePut();
+                    break;
+                case 'DELETE':
+                    $this->handleDelete();
+                    break;
+                default:
+                    $this->output(405, ["error" => "Método não permitido"]);
+                    break;
+            }
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
     }
-}
 
-if (validatorMethodServer('GET') && $id_usuario) {
-    try {
-        $response = ListService::getAllLists($id_usuario);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
+    private function handlePost(): void
+    {
+        $params = $this->getRequestParams(['id_user', 'name_list', 'description', 'id_type_list']);
+        if ($params) {
+            $this->createList($params['id_user'], $params['name_list'], $params['description'], $params['id_type_list']);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
     }
-}
 
-if (validatorMethodServer('PUT') && $id_lista && $id_usuario) {
-    parse_str(file_get_contents("php://input"), $_PUT);
-    if (isset($_PUT['nome_lista']) && isset($_PUT['descricao']) && isset($_PUT['id_tipo_lista'])) {
+    private function handleGet(): void
+    {
+        $id_user = $_GET['id_user'] ?? null;
+        if ($id_user) {
+            $this->getAllLists($id_user);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function handlePut(): void
+    {
+        parse_str(file_get_contents("php://input"), $_PUT);
+        $params = $this->getRequestParams(['id_user', 'id_list', 'name_list', 'description', 'id_type_list'], $_PUT);
+        if ($params) {
+            $this->updateList($params['id_user'], $params['name_list'], $params['description'], $params['id_type_list'], $params['id_list']);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function handleDelete(): void
+    {
+        $id_user = $_GET['id_user'] ?? null;
+        $id_list = $_GET['id_list'] ?? null;
+        if ($id_user && $id_list) {
+            $this->deleteList($id_user, $id_list);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function createList($id_user, $name_list, $description, $id_type_list): void
+    {
         try {
-            $response = ListService::updateList(
-                $id_usuario,
-                $id_lista,
-                $_PUT['nome_lista'],
-                $_PUT['descricao'],
-                $_PUT['id_tipo_lista']
-            );
-            output(200, $response);
+            $list = new Listing($name_list, $description, $id_type_list, $id_user);
+            $response = $this->listService->saveList($id_user, $list);
+            $this->output(201, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
+    }
+
+    private function getAllLists($id_user): void
+    {
+        try {
+            $response = $this->listService->getAll($id_user);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function updateList($id_user, $name_list, $description, $id_type_list, $id_list): void
+    {
+        try {
+            $list = new Listing($name_list, $description, $id_type_list);
+            $list->setIdList($id_list);
+            $response = $this->listService->update($id_user, $list);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function deleteList($id_user, $id_list): void
+    {
+        try {
+            $response = $this->listService->delete($id_user, $id_list);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function getRequestParams(array $keys, array $inputData = null): ?array
+    {
+        $inputData = $inputData ?: $_POST;
+        $params = [];
+        foreach ($keys as $key) {
+            if (empty($inputData[$key])) {
+                return null;
+            }
+            $params[$key] = $inputData[$key];
+        }
+        return $params;
+    }
+
+    private function output(int $statusCode, array $response): void
+    {
+        http_response_code($statusCode);
+        echo json_encode($response);
     }
 }
 
-if (validatorMethodServer('DELETE') && $id_lista) {
-    try {
-        $response = ListService::deleteList($id_usuario, $id_lista);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
-    }
-}
-
-output(400, ["error" => "Tipo de requisição não aceita"]);
+$controller = new ListController(new ListService());
+$controller->handleRequest($_SERVER['REQUEST_METHOD']);

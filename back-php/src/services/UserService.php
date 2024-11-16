@@ -2,54 +2,62 @@
 
 require_once(__DIR__ . '/../validators/UserValidator.php');
 require_once(__DIR__ . '/../repositories/UserRepository.php');
+require_once(__DIR__ . '/../models/User.php');
 require_once(__DIR__ . '/../config/utils.php');
 
 class UserService
 {
-    public static function getUser($email, $password)
+    public static function getUser(User $user)
     {
-        $errors = UserValidator::validateLogin($email, $password);
-
+        $errors = UserValidator::validateLogin($user);
         if (!empty($errors)) {
-            output(400, ["errors" => $errors]);
+            throw new Exception("Dados inválidos: " . implode(", ", $errors), 400);
         }
 
-        $user = UserRepository::loginUser($email, $password);
 
-        if (!$user) {
+        $userResponse = UserRepository::login($user);
+        if (!$userResponse) {
             throw new Exception("Usuário ou senha inválidos", 401);
         }
 
-        return ["id" => $user];
+        return self::generateSuccessResponse(["id" => $userResponse]);
     }
 
-    public static function saveUser($name, $email, $password){
-
-        $errors = UserValidator::validate($name, $email, $password);
-
-        if (!empty($errors)) {
-            output(400, ["errors" => $errors]);
-        }
-
-        $response = UserRepository::insertUserIntoDatabase($name, $email, $password);
-
-        if(!$response){
-            throw new Exception("Erro ao cadastrar usuario.", 500);
-        }
-
-        return ["msg" => "Usuario criado com sucesso!"];
-    }
-
-    public static function getMyData($id)
+    public static function saveUser(User $user)
     {
-
-
-        $user = UserRepository::getUserData($id);
-
-        if (!$user) {
-            throw new Exception("Usuário ou senha inválidos", 401);
+        $errors = UserValidator::validate($user);
+        if (!empty($errors)) {
+            throw new Exception("Dados inválidos: " . implode(", ", $errors), 400);
         }
 
-        return $user;
+        $response = UserRepository::create($user);
+        if ($response <= 0) {
+            throw new Exception("Erro ao cadastrar usuário", 500);
+        }
+
+        return self::generateSuccessResponse([], "Usuário criado com sucesso!");
+    }
+
+    public static function getMyData(int $id)
+    {
+        $user = UserRepository::findById($id);
+        if (!$user) {
+            throw new Exception("Usuário não encontrado", 404);
+        }
+
+        return self::generateSuccessResponse([
+            "email" => $user->getEmail(),
+            "name" => $user->getUserName(),
+            "dt_account_creation" => $user->getDtAccountCreation()
+        ]);
+    }
+
+    private static function generateSuccessResponse(array $data = [], string $message = ''): array
+    {
+        return [
+            "status" => "success",
+            "message" => $message,
+            "data" => $data
+        ];
     }
 }

@@ -1,35 +1,24 @@
 RewriteEngine On 
+RewriteBase /Lunodoro/back-php/src/controllers/
 
-#tipo de lista
+# Usuário
+RewriteRule ^usuarios$ userController.php [L,NC]
+RewriteRule ^usuarios/login$ userController.php [L,NC]
+RewriteRule ^usuarios/detalhes$ userController.php [QSA,NC]
 
-RewriteRule ^tipoLista$ ./back-php/src/controllers/TypeListController.php [L,NC]
+# Tipo de lista
+RewriteRule ^tipoLista$ TypeListController.php [L,NC]
+RewriteRule ^tipoLista/detalhes$ TypeListController.php [QSA,NC]
 
-#usuario
+# Lista
+RewriteRule ^lista$ ListController.php [QSA,NC]
+# RewriteRule ^lista/detalhes$ ListController.php [QSA,NC]
 
-RewriteRule ^usuarios$ ./back-php/src/controllers/UserController.php [L,NC]
+# Tarefa
+RewriteRule ^usuarios/tarefas$ TaskController.php [QSA,NC]
+RewriteRule ^usuarios/tarefas/detalhes$ TaskController.php [QSA,NC]
 
-RewriteRule ^usuarios/login$ ./back-php/src/controllers/UserController.php?action=login [L,NC]
-
-#lista
-
-RewriteRule ^usuarios/([0-9]+)/lista$ ./back-php/src/controllers/ListController.php?id_usuario=$1 [L,NC]
-
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)$ ./back-php/src/controllers/ListController.php?id_usuario=$1&?id=$2 [L,NC]
-
-#tarefa
-
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2 [L,NC]
-
-RewriteRule ^usuarios/([0-9]+)/lista/([0-9]+)/tarefa/([0-9]+)$ ./back-php/src/controllers/TaskController.php?id_usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
-
-
-#lista de tarefas
-
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
-
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/tarefas/([0-9]+)$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2&id_tarefa=$3 [L,NC]
-
-RewriteRule ^usuarios/([0-9]+)/listas/([0-9]+)/foco$ ./back-php/src/controllers/TaskListController.php?usuario=$1&id_lista=$2 [L,NC]
-
-RewriteRule ^usuarios/([0-9]+)/tarefas/concluidas/tiposListas$ ./back-php/src/controllers/TaskListController.php?id_lista=$1&id_tarefa=$2 [L,NC]
-
+# Lista de tarefas
+RewriteRule ^usuarios/listas/tarefas$ TaskListController.php [QSA,NC]
+RewriteRule ^usuarios/listas/foco$ TaskListController.php [QSA,NC]
+RewriteRule ^usuarios/tarefas/concluidas/tiposListas$ TaskListController.php [QSA,NC]
