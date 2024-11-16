@@ -6,6 +6,7 @@ import TaskList from "../pages/TaskList/TaskList";
 import SignUp from "../pages/SignUp/SignUp";
 import ReportPage from "../pages/ReportPage/ReportPage";
 import AboutPage from "../pages/AboutPage/AboutPage";
+import TaskDetails from "../pages/TaskDetails/TaskDetails";
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
         <Route path="signUp" element={<SignUp />} />
         <Route path="task-list" element={<TaskList />} />
         <Route path="task-list/:taskId" element={<TaskList />} />
+        <Route path="task-list/taskId" element={<TaskDetails />} /> //TODO: vai virar a rota de cima qnd tiver ID
         <Route path="report" element={<ReportPage />} />
         <Route path="about" element={<AboutPage />} />
       </Route>
