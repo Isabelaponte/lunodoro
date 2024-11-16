@@ -7,73 +7,165 @@ require_once(__DIR__ . '/../config/utils.php');
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$url = explode('/', $_SERVER['REQUEST_URI']);
-$id_usuario = isset($url[3]) ? (int)$url[3] : 0;
-$id_lista = isset($url[5]) ? (int)$url[5] : 0;
-$id_tarefa = isset($url[7]) ? (int)$url[7] : 0;
+class TaskController
+{
+    private TaskService $taskService;
 
-if (validatorMethodServer('POST')) {
-    if (isset($_POST['nome']) && isset($_POST['descricao']) && isset($_POST['dt_final']) && isset($_POST['status']) && $id_lista) {
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
+    public function handleRequest(string $method): void
+    {
         try {
-            $response = TaskService::createTask(
-                $_POST['nome'],
-                $_POST['descricao'],
-                $_POST['dt_final'],
-                $_POST['status'],
-                $id_lista
+            $method = strtoupper($method);
+            switch ($method) {
+                case 'POST':
+                    $this->handlePost();
+                    break;
+                case 'GET':
+                    $this->handleGet();
+                    break;
+                case 'PUT':
+                    $this->handlePut();
+                    break;
+                case 'DELETE':
+                    $this->handleDelete();
+                    break;
+                default:
+                    $this->output(405, ["error" => "Método não permitido"]);
+                    break;
+            }
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function handlePost(): void
+    {
+        $params = $this->getRequestParams(['name', 'description', 'end_date', 'status', 'id_list']);
+        if ($params) {
+            $this->createTask(
+                $params['name'],
+                $params['description'],
+                $params['end_date'],
+                $params['status'],
+                $params['id_list']
             );
-            output(201, $response);
-        } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
     }
-}
 
-if (validatorMethodServer('GET') && $id_tarefa && $id_usuario) {
-    try {
-        $response = TaskService::getAllTasks($id_tarefa, $id_usuario);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
+    private function handleGet(): void
+    {
+        $id_task = $_GET['id_task'] ?? null;
+        $id_user = $_GET['id_user'] ?? null;
+
+        if ($id_task && $id_user) {
+            $this->getAllTasks($id_task , $id_user);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
     }
-}
 
-if (validatorMethodServer('PUT')) {
-    parse_str(file_get_contents("php://input"), $_PUT);
-    if ($id_tarefa && $id_usuario && isset($_PUT['nome']) && isset($_PUT['descricao']) && isset($_PUT['dt_final']) && isset($_PUT['status'])) {
+
+    private function handlePut(): void
+    {
+        parse_str(file_get_contents("php://input"), $_PUT);
+        $params = $this->getRequestParams(['name', 'description', 'end_date', 'status', 'id_user', 'id_task'], $_PUT);
+        if ($params) {
+            $this->updateTask(
+            $params['name'],
+            $params['description'],
+            $params['end_date'],
+            $params['status'],
+            $params['id_user'],
+            $params['id-task']
+        );
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function handleDelete(): void
+    {
+        $id_task = $_GET['id_task'] ?? null;
+        $id_user = $_GET['id_user'] ?? null;
+
+        if ($id_user && $id_task) {
+            $this->deleteTask($id_task, $id_user);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function createTask($name, $description, $end_date, $status, $list_id): void
+    {
         try {
-            $response = TaskService::updateTask(
-                $id_tarefa,
-                $_PUT['nome'],
-                $_PUT['descricao'],
-                $_PUT['dt_final'],
-                $_PUT['status'],
-                $id_usuario
-
-            );
-            output(200, $response);
+            $task = new Task($name, $description, $end_date, $status, $list_id);
+            $response = $this->taskService->createTask($task);
+            $this->output(201, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
     }
-}
 
-if (validatorMethodServer('DELETE')) {
-    if ($id_tarefa && $id_usuario) {
+    private function getAllTasks($id_task, $id_user): void
+    {
         try {
-            $response = TaskService::deleteTask($id_tarefa, $id_usuario);
-            output(200, $response);
+            $response = $this->taskService->getAllTasks($id_task , $id_user);
+            $this->output(200, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
+    }
+
+
+    private function updateTask($name, $description, $end_date, $status, $id_user, $id_task): void
+    {
+        try {
+            $task = new Task($name, $description, $end_date, $status);
+            $task->setId($id_task);
+            $response = $this->taskService->updateTask($task, $id_user);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function deleteTask($id_task, $id_user): void
+    {
+        try {
+            $response = $this->taskService->deleteTask($id_task, $id_user);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function getRequestParams(array $keys, array $inputData = null): ?array
+    {
+        $inputData = $inputData ?: $_POST;
+        $params = [];
+        foreach ($keys as $key) {
+            if (empty($inputData[$key])) {
+                return null;
+            }
+            $params[$key] = $inputData[$key];
+        }
+        return $params;
+    }
+
+    private function output(int $statusCode, array $response): void
+    {
+        http_response_code($statusCode);
+        echo json_encode($response);
     }
 }
 
-output(400, ["error" => "Tipo de requisição não aceita"]);
+$controller = new TaskController(new TaskService());
+$controller->handleRequest($_SERVER['REQUEST_METHOD']);

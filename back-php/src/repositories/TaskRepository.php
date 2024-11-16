@@ -5,19 +5,19 @@ require_once(__DIR__ . '/TaskListRepository.php');
 
 class TaskRepository
 {
-    public static function insertTaskIntoDatabase($nome, $descricao, $dt_final, $status, $id_lista)
+    public static function insertTaskIntoDatabase($name, $description, $end_date, $status, $id_list)
     {
         try {
             $conn = Connection::getConnection();
             $conn->beginTransaction();
             
             $stmt = $conn->prepare("INSERT INTO tarefa (nome, descricao, dt_final, status) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$nome, $descricao, $dt_final, $status]);
+            $stmt->execute([$name, $description, $end_date, $status]);
             
             $id_tarefa = $conn->lastInsertId();
             
             $stmtListaTarefa = $conn->prepare("INSERT INTO lista_tarefa (id_lista, id_tarefa) VALUES (?, ?)");
-            $stmtListaTarefa->execute([$id_lista, $id_tarefa]);
+            $stmtListaTarefa->execute([$id_list, $id_tarefa]);
             
             $conn->commit();
             return $stmt->rowCount();
@@ -27,7 +27,7 @@ class TaskRepository
         }
     }
 
-    public static function findTaskFromDatabase($id_usuario, $id_tarefa)
+    public static function findTaskFromDatabase($id_user, $id_task)
     {
         try {
             $conn = Connection::getConnection();
@@ -39,7 +39,7 @@ class TaskRepository
                 INNER JOIN lista l ON lt.id_lista = l.id
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
-            $stmt->execute([$id_tarefa, $id_usuario]);
+            $stmt->execute([$id_task, $id_user]);
             
             return $stmt->fetch();
         } catch (PDOException $e) {
@@ -47,7 +47,7 @@ class TaskRepository
         }
     }
 
-    public static function updateTask($id_usuario, $id_tarefa, $nome, $descricao, $dt_final, $status)
+    public static function updateTask($id_user, $id_task, $name, $description, $end_date, $status)
     {
         try {
             $conn = Connection::getConnection();
@@ -60,7 +60,7 @@ class TaskRepository
                 SET t.nome = ?, t.descricao = ?, t.dt_final = ?, t.status = ?
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
-            $stmt->execute([$nome, $descricao, $dt_final, $status, $id_tarefa, $id_usuario]);
+            $stmt->execute([$name, $description, $end_date, $status, $id_task, $id_user]);
             
             $conn->commit();
             return $stmt->rowCount();
@@ -70,7 +70,7 @@ class TaskRepository
         }
     }
 
-    public static function removeTask($id_usuario, $id_tarefa)
+    public static function removeTask($id_user, $id_task)
     {
         try {
             $conn = Connection::getConnection();
@@ -83,7 +83,7 @@ class TaskRepository
                 INNER JOIN lista l ON lt.id_lista = l.id
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
-            $stmt->execute([$id_tarefa, $id_usuario]);
+            $stmt->execute([$id_task, $id_user]);
             
             $conn->commit();
             return $stmt->rowCount();
@@ -93,7 +93,7 @@ class TaskRepository
         }
     }
 
-    public static function checkTaskCompletionAndCalculateDuration($id_usuario, $id_tarefa)
+    public static function checkTaskCompletionAndCalculateDuration($id_user, $id_task)
     {
         try {
             $conn = Connection::getConnection();
@@ -105,7 +105,7 @@ class TaskRepository
                 INNER JOIN lista l ON lt.id_lista = l.id
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
-            $stmt->execute([$id_tarefa, $id_usuario]);
+            $stmt->execute([$id_task, $id_user]);
             $task = $stmt->fetch();
             
             if ($task && $task['dt_final']) {
@@ -119,7 +119,7 @@ class TaskRepository
                     SET duracao = ?, status = 'concluida' 
                     WHERE id = ?
                 ");
-                $updateStmt->execute([$durationInMinutes, $id_tarefa]);
+                $updateStmt->execute([$durationInMinutes, $id_task]);
                 
                 $conn->commit();
                 return $durationInMinutes;
