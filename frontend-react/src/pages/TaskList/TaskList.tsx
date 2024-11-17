@@ -49,7 +49,7 @@ const TaskList = () => {
           Criar nova tarefa
         </StyledButton>
 
-        <CardTask onOpenEditModal={() => setOpenEditModal(true)} onOpenDeleteModal={() => setOpenDeleteModal(true)} />
+        <CardTask id={"1"} onOpenEditModal={() => setOpenEditModal(true)} onOpenDeleteModal={() => setOpenDeleteModal(true)} />
       </ContainerTaskList>
     </>
   );

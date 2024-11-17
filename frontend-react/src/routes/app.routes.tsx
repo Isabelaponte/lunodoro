@@ -23,8 +23,7 @@ const AppRouter = () => {
           </>
         )}
         <Route path="task-list" element={<TaskList />} />
-        <Route path="task-list/:taskId" element={<TaskList />} />
-        <Route path="task-list/taskId" element={<TaskDetails />} /> //TODO: vai virar a rota de cima qnd tiver ID
+        <Route path="task-list/:taskId" element={<TaskDetails />} /> //TODO: vai virar a rota de cima qnd tiver ID
         <Route path="report" element={<ReportPage />} />
         <Route path="about" element={<AboutPage />} />
       </Route>

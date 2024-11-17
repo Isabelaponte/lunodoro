@@ -13,11 +13,28 @@ import {
 } from "./CardTask.styles";
 import { Link } from "react-router-dom";
 import { ChipType } from "../../utils/enums/status.enum";
+import { useEffect } from "react";
+import useAuthStore from "../../store/useAuthStore";
 
 interface CardTaskProps {
   onOpenEditModal: () => void;
   onOpenDeleteModal: () => void;
+  id: string;
 }
+
+useEffect(()=> {
+  const token = localStorage.getItem("token");
+  const { user } = useAuthStore.getState();
+
+  if (token) {
+    fetch(`http://localhost/luno/lunodoro/usuarios?id=${user?.id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        
+      })
+  }
+})
 
 const CardTask = ({ ...props }: CardTaskProps) => {
   return (
@@ -34,7 +51,7 @@ const CardTask = ({ ...props }: CardTaskProps) => {
             </IconButton>
           </OptionsButtonDiv>
         </CardHeader>
-        <Link to={"/task-list"}>
+        <Link to={`/task-list/${props.id}`}>
           <CardTitle>Tarefa 1</CardTitle>
         </Link>
         <CardP>Descrição da tarefa</CardP>

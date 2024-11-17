@@ -25,10 +25,10 @@ const ModalDelete = ({
     onClose();
   };
 
-  console.log(queryKey);
-  console.log(queryFn);
-  console.log(title);
-  console.log(id);
+  // console.log(queryKey);
+  // console.log(queryFn);
+  // console.log(title);
+  // console.log(id);
 
   return (
     <ModalConfirmBase
