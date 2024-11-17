@@ -18,7 +18,6 @@ import { useFormUtils } from "../../utils/form.utils";
 import { Severety, useNotificationStore } from "../../store/useNotification";
 import { Alert } from "@mui/material";
 
-//TODO: adicionar controller e chamada api
 
 const Login = () => {
   const setToken = useAuthStore((state) => state.setToken);
@@ -46,9 +45,9 @@ const Login = () => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify({
+          body: new URLSearchParams({
             email: data.email,
             password: data.password,
           }),
@@ -61,8 +60,10 @@ const Login = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
-      const { token, user } = data.data;
+      
+      const token = 'mockedToken';
+      const user = responseData.data;
+      
       setToken(token);
       setUser(user);
       navigate("/");
