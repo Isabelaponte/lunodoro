@@ -1,131 +1,88 @@
 <?php
 
-<<<<<<< HEAD
-require_once(__DIR__ . '/../repositories/TaskListRepository.php');
-require_once(__DIR__ . '/../config/utils.php');
-=======
 require_once(__DIR__ . "/../repositories/TaskListRepository.php");
 require_once(__DIR__ . "/../config/utils.php");
->>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
 
 class TaskListService
 {
-    public static function createListTask($list_id, $task_id)
+    public static function createListTask(TaskList $taskList)
     {
-        $errors = validateIDs($list_id, $task_id);
+        $errors = validateIDs($taskList->getIdList(), $taskList->getIdTask());
 
         if (!empty($errors)) {
             output(400, ["errors" => $errors]);
         }
 
-        $response = TaskListRepository::insertListTaskIntoDatabase($list_id, $task_id);
+        $response = TaskListRepository::insertListTaskIntoDatabase($taskList->getIdList(), $taskList->getIdTask());
 
         if (!$response) {
             throw new Exception("Erro ao cadastrar lista", 500);
         }
 
         return [
-            "msg" => "Lista criada com sucesso!",
+            "status" => "success",
             "data" => [
-                "id_lista" => $list_id,
-                "id_tarefa" => $task_id
+                "id_list" => $taskList->getIdList(),
+                "id_task" => $taskList->getIdTask()
             ]
         ];
     }
 
-    public static function getAllTasksByList($list_id, $user_id)
+    public static function getAllTasksByList($id_list, $id_user)
     {
-        $errors = validateIDs($list_id, $user_id);
+        $errors = validateIDs($id_list, $id_user);
 
         if (!empty($errors)) {
             output(400, ["errors" => $errors]);
         }
 
-        $response = TaskListRepository::findTasksByList($list_id, $user_id);
+        $response = TaskListRepository::findTasksByList($id_list, $id_user);
 
         if (!$response) {
             throw new Exception("Não existem tarefas associadas a essa lista", 404);
         }
 
         return [
-            "msg" => "Tarefas encontradas com sucesso!",
+            "status" => "success",
             "data" => $response
         ];
     }
 
-    public static function getAllListsByTask($task_id, $user_id)
+    public static function getAllListsByTask($id_task, $id_user)
     {
-        $errors = validateIDs($task_id, $user_id);
+        $errors = validateIDs($id_task, $id_user);
 
         if (!empty($errors)) {
             output(400, ["errors" => $errors]);
         }
 
-        $response = TaskListRepository::findListsByTask($task_id, $user_id);
+        $response = TaskListRepository::findListsByTask($id_task, $id_user);
 
         if (!$response) {
             throw new Exception("Não existem listas associadas a essa tarefa", 404);
         }
 
         return [
-            "msg" => "Listas encontradas com sucesso!",
+            "status" => "success",
             "data" => $response
         ];
     }
-    public static function removeTaskList($list_id, $task_id)
+    public static function removeTaskList($id_list, $id_task)
     {
-        $errors = validateIDs($list_id, $task_id);
+        $errors = validateIDs($id_list, $id_task);
 
         if (!empty($errors)) {
             output(400, ["errors" => $errors]);
         }
 
-        $response = TaskListRepository::removeListTask($list_id, $task_id);
+        $response = TaskListRepository::removeListTask($id_list, $id_task);
 
         if (!$response) {
             throw new Exception("Não existe lista de tarefas associada a esta lista ou tarefa", 404);
         }
 
         return [
-            "msg" => "Lista removida com sucesso!",
-            "data" => $response
-        ];
-    }
-
-    public static function getTotalHoursOfFocus($task_id, $user_id)
-    {
-        $errors = validateIDs($task_id, $user_id);
-
-        if (!empty($errors)) {
-            output(400, ["errors" => $errors]);
-        }
-
-        $response = TaskListRepository::getTotalHoursOfFocus($task_id, $user_id);
-
-        if (!$response) {
-            throw new Exception("Tarefa não encontrada", 404);
-        }
-
-        return [
-            "msg" => "Tempo de foco calculado com sucesso!",
-            "data" => $response
-        ];
-    }
-    
-    public static function getCompletedTasksByTypeListInLast7Days($user_id)
-    {
-        if (!isAValidID($user_id)) {
-            output(400, ["errors" => $user_id]);
-        }
-
-        $response = TaskListRepository::getCompletedTasksByTypeListInLast7Days( $user_id);
-
-        if (!$response) {
-            throw new Exception("Tarefas não encontradas", 404);
-        }
-
-        return [
-            "msg" => "Tarefas encontradas com sucesso!",
+            "status" => "success",
             "data" => $response
         ];
     }
