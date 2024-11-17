@@ -7,14 +7,21 @@ import SignUp from "../pages/SignUp/SignUp";
 import ReportPage from "../pages/ReportPage/ReportPage";
 import AboutPage from "../pages/AboutPage/AboutPage";
 import TaskDetails from "../pages/TaskDetails/TaskDetails";
+import useAuthStore from "../store/useAuthStore";
 
 const AppRouter = () => {
+  const token = useAuthStore((state) => state.token);
+  
   return (
     <Routes>
       <Route path="/" element={<RootHome />}>
         <Route path="" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signUp" element={<SignUp />} />
+        {!token && (
+          <>
+            <Route path="login" element={<Login />} />
+            <Route path="signUp" element={<SignUp />} />
+          </>
+        )}
         <Route path="task-list" element={<TaskList />} />
         <Route path="task-list/:taskId" element={<TaskList />} />
         <Route path="task-list/taskId" element={<TaskDetails />} /> //TODO: vai virar a rota de cima qnd tiver ID
