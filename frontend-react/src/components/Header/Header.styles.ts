@@ -34,6 +34,22 @@ export const HeaderLinkLogin = styled(HeaderLink)`
   }
 `;
 
+export const Logout = styled.button`
+  background-color: aliceblue;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: ${({ theme }) => theme.colors.textColorSecondary};
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.textColor};
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.bgBackground};
+  }
+`;
+
 export const H1 = styled.h1`
   color: ${({ theme }) => theme.colors.textColor};
   font-size: 1.5rem;

@@ -4,10 +4,10 @@ require_once(__DIR__ . '/../services/UserService.php');
 require_once(__DIR__ . '/../config/utils.php');
 require_once(__DIR__ . '/../models/User.php');
 
-header("Access-Control-Allow-Methods: POST, GET");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 class UserController {
 
@@ -27,6 +27,10 @@ class UserController {
 
                 case 'GET':
                     $this->handleGet();
+                    break;
+                
+                case 'OPTIONS':
+                    $this->output(200, ["message" => "OK"]);
                     break;
 
                 default:

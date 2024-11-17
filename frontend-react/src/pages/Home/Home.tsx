@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { CardHome, StyledButton, StyledContainerHome } from "./Home.styles";
-import api from "../../services/api/api";
+import useAuthStore from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const { user } = useAuthStore.getState();
 
     if (token) {
-      api.get('/usuarios?id=1')
-        .then(response => {
-          console.log(response.data.data.name);
-          setUserName(response.data.data.name);
+      fetch(`http://localhost/luno/lunodoro/usuarios?id=${user?.id}`)
+        .then((response) => response.json())
+        .then((response) => {
+          setUserName(response.data.name);
         })
     } else {
       setUserName("Visitante");
@@ -24,7 +27,7 @@ const Home = () => {
       <CardHome>
         <h1>Bem vindo, {userName}!</h1>
         <p>Para começar, crie sua lista de tarefas e comece a organizar seu tempo de forma eficiente.</p>
-        <StyledButton>Acessar minhas listas de tarefas</StyledButton>
+        <StyledButton onClick={() => navigate("/task-list")}>Acessar minhas listas de tarefas</StyledButton>
       </CardHome>
     </StyledContainerHome>
   );
