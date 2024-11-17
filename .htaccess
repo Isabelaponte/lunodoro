@@ -6,6 +6,9 @@ RewriteRule ^usuarios$ userController.php [L,NC]
 RewriteRule ^usuarios/login$ userController.php [L,NC]
 RewriteRule ^usuarios/detalhes$ userController.php [QSA,NC]
 
+# Relatório
+RewriteRule ^relatorio$ RelatoryController.php [QSA,NC]
+
 # Tipo de lista
 RewriteRule ^tipoLista$ TypeListController.php [L,NC]
 RewriteRule ^tipoLista/detalhes$ TypeListController.php [QSA,NC]
@@ -22,3 +25,6 @@ RewriteRule ^usuarios/tarefas/detalhes$ TaskController.php [QSA,NC]
 RewriteRule ^usuarios/listas/tarefas$ TaskListController.php [QSA,NC]
 RewriteRule ^usuarios/listas/foco$ TaskListController.php [QSA,NC]
 RewriteRule ^usuarios/tarefas/concluidas/tiposListas$ TaskListController.php [QSA,NC]
+
+# Caso não entre em nenhum outro
+RewriteRule .* index.php[L, QSA]
