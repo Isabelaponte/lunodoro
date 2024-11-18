@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   ListTitle,
@@ -14,10 +14,28 @@ import Task from "./Task/Task";
 import { ContainerTaskList } from "../TaskList/TaskList.styles";
 import Modals from "../../components/Modal/Modal";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
+import useAuthStore from "../../store/useAuthStore";
+import { useParams } from "react-router-dom";
 
 const TaskDetails = () => {
+  const token = localStorage.getItem("token");
+  const { user } = useAuthStore.getState();
+  const { taskId } = useParams();
+  
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      fetch(`http://localhost/luno/lunodoro/usuarios/tarefas?id_taskList=${taskId}&id_user=${user?.id}`)
+        .then((response) => response.json())
+        .then((response) => {
+          setTasks(response.data);
+        });
+    } else {
+      console.log("Não tem token");
+    }
+  }, []);
 
   const handleAddTask = () => {
     setIsModalOpen(true);
@@ -26,7 +44,7 @@ const TaskDetails = () => {
   return (
     <ContainerTaskList>
       <Modals open={isModalOpen} name={"Adicionar nova tarefa"} onClose={() => setIsModalOpen(false)}>
-        <CreateEditTask />
+        <CreateEditTask id_list={taskId} />
       </Modals>
       <TimerSection>
         <TimerHeader>

@@ -2,7 +2,7 @@
 
 class TaskValidator
 {
-    public static function validate($name, $description, $end_date, $status)
+    public static function validate($name, $description, $status)
     {
         $errors = [];
 
@@ -12,10 +12,6 @@ class TaskValidator
 
         if (!is_string($description)) {
             $errors[] = "A descrição deve ser uma string.";
-        }
-
-        if (!self::validateDate($end_date)) {
-            $errors[] = "A data de término deve estar no formato Y-m-d H:i:s.";
         }
 
         $validStatuses = ['em processo', 'concluida', 'lista vazia'];

@@ -42,7 +42,6 @@ const TaskList = () => {
       fetch(`http://localhost/luno/lunodoro/lista?id_user=${user?.id}`)
         .then((response) => response.json())
         .then((response) => {
-          console.log(response);
           setTaskList(response.data);
         });
     } else {

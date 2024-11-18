@@ -5,14 +5,14 @@ require_once(__DIR__ . '/TaskListRepository.php');
 
 class TaskRepository
 {
-    public static function insertTaskIntoDatabase($name, $description, $end_date, $status, $id_list)
+    public static function insertTaskIntoDatabase($name, $description, $status, $id_list)
     {
         try {
             $conn = Connection::getConnection();
             $conn->beginTransaction();
             
-            $stmt = $conn->prepare("INSERT INTO tarefa (nome, descricao, dt_final, status) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $description, $end_date, $status]);
+            $stmt = $conn->prepare("INSERT INTO tarefa (nome, descricao, status) VALUES (?, ?, ?)");
+            $stmt->execute([$name, $description, $status]);
             
             $id_tarefa = $conn->lastInsertId();
             
@@ -46,6 +46,27 @@ class TaskRepository
             throw new Exception("Erro ao acessar os dados", 500);
         }
     }
+
+    public static function findAllTasksFromDatabase($id_user, $id_taskList)
+{
+    try {
+        $conn = Connection::getConnection();
+        
+        $stmt = $conn->prepare("
+            SELECT t.* 
+            FROM tarefa t
+            INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
+            INNER JOIN lista l ON lt.id_lista = l.id
+            WHERE l.id_usuario = ? AND l.id = ?
+        ");
+        $stmt->execute([$id_user, $id_taskList]);
+
+        return $stmt->fetchAll();
+    } catch (PDOException $e) {
+        throw new Exception("Erro ao acessar os dados: " . $e->getMessage(), 500);
+    }
+}
+
 
     public static function updateTask($id_user, $id_task, $name, $description, $end_date, $status)
     {

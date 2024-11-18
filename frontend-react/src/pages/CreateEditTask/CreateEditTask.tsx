@@ -1,30 +1,62 @@
 import { TextField } from "@mui/material";
-import { Form } from "../CreateEditTaskList/CreateTaskList.styles";
+import {
+  CancelButton,
+  DivOptions,
+  Form,
+} from "../CreateEditTaskList/CreateTaskList.styles";
 import * as yup from "yup";
 import { useFormUtils } from "../../utils/form.utils";
 import { Controller } from "react-hook-form";
+import { StyledButton } from "../Home/Home.styles";
+import useAuthStore from "../../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
-const CreateEditTask = () => {
+const CreateEditTask = ({ id_list }: any) => {
+  const token = localStorage.getItem("token");
+  const { user } = useAuthStore.getState();
+  const navigate = useNavigate();
+
   const schema = yup.object({
     name: yup.string().required("Campo obrigatório"),
-    initial_date: yup.date().required("Campo obrigatório"),
-    final_date: yup.date().required("Campo obrigatório"),
     description: yup.string(),
-    pomodoro_estimate: yup.number().required("Campo obrigatório"),
   });
 
   const { handleSubmit, trigger, errors, control } = useFormUtils<any>(schema, {
     name: "",
-    initial_date: "",
-    final_date: "",
     description: "",
-    pomodoro_estimate: 0,
   });
+
+  console.log(errors);
 
   const onSubmit = async (data: any) => {
     await trigger();
 
-    console.log(data);
+    try {
+      const response = await fetch(
+        `http://localhost/luno/lunodoro/usuarios/tarefas`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            id_list: id_list,
+            name: data?.name,
+            description: data?.description,
+            status: "em processo",
+          }),
+        }
+      );
+
+      if (response.ok) {
+        navigate("/task-list");
+      } else {
+        const responseJson = await response.json();
+        console.log(responseJson);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -44,33 +76,6 @@ const CreateEditTask = () => {
           )}
         />
         <Controller
-          name="initial_date"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <DateField
-              {...field}
-              label="Data de Início"
-              size="small"
-              type="date"
-              required
-            />
-          )}
-        />
-        <Controller
-          name="final_date"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Data de Término"
-              size="small"
-              required
-            />
-          )}
-        />
-        <Controller
           name="description"
           control={control}
           rules={{ required: true }}
@@ -84,21 +89,12 @@ const CreateEditTask = () => {
             />
           )}
         />
-        <Controller
-          name="pomodoro_estimate"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              label="Estimativa de Pomodoros"
-              size="small"
-              type="number"
-              sx={{ width: "200px" }}
-              required
-            />
-          )}
-        /> 
+        <DivOptions>
+          <StyledButton type="submit">Salvar</StyledButton>
+          <CancelButton type="button" onClick={() => {}}>
+            Cancelar
+          </CancelButton>
+        </DivOptions>
       </Form>
     </>
   );

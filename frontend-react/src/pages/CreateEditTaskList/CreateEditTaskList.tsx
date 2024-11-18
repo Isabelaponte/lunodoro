@@ -91,7 +91,7 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
           .then((response) => {
             if (response.status !== "success") {
               throw new Error(`Erro ao criar lista: ${response.statusText}`);
-            }
+            }  
             return response.json();
           })
           .then((result) => {

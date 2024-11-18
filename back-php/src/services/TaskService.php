@@ -8,13 +8,13 @@ class TaskService
 {
     public static function createTask(Task $task)
     {
-        $errors = TaskValidator::validate($task->getName(), $task->getDescription(), $task->getEndDate(), $task->getStatus());
+        $errors = TaskValidator::validate($task->getName(), $task->getDescription(), $task->getStatus());
 
         if (!empty($errors)) {
-            return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
+            throw new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
         }
 
-        $response = TaskRepository::insertTaskIntoDatabase($task->getName(), $task->getDescription(), $task->getEndDate(), $task->getStatus(), $task->getListId());
+        $response = TaskRepository::insertTaskIntoDatabase($task->getName(), $task->getDescription(), $task->getStatus(), $task->getListId());
 
         if (!$response) {
             throw new RuntimeException("Erro ao cadastrar tarefa", 500);
@@ -45,6 +45,23 @@ class TaskService
             "data" => $response
         ];
     }
+
+    public static function getAllTasksByList(int $id_taskList, int $id_user)
+    {
+        $errors = validateIDs($id_taskList, $id_user);
+    
+        if (!empty($errors)) {
+            return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
+        }
+    
+        $response = TaskRepository::findAllTasksFromDatabase($id_user, $id_taskList);
+    
+        return [
+            "status" => "success",
+            "data" => $response ?: []
+        ];
+    }
+    
     
     public static function updateTask(Task $task, $id_user)
     {

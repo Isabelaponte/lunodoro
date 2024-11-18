@@ -7,12 +7,12 @@ class Task {
     private $start_date;
     private $end_date;
     private $status;
+    private $duracao;
     private $list_id;
 
-    public function __construct($name, $description, $end_date, $status, $list_id = null) {
+    public function __construct($name, $description, $status, $list_id = null) {
         $this->name = $name;
         $this->description = $description;
-        $this->end_date = $end_date;
         $this->status = $status;
         $this->list_id = $list_id;
     }
@@ -43,6 +43,10 @@ class Task {
 
     public function getListId() {
         return $this->list_id;
+    }
+
+    public function getDuracao() {
+        return $this->duracao;
     }
 
     public function setId($id) {
