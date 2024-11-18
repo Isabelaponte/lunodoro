@@ -58,7 +58,10 @@ class ListController
     private function handleGet(): void
     {
         $id_user = $_GET['id_user'] ?? null;
-        if ($id_user) {
+        $id_list = $_GET['id_list'] ?? null;
+        if($id_user && $id_list){
+            $this->getList($id_user, $id_list);
+        } elseif ($id_user) {
             $this->getAllLists($id_user);
         } else {
             $this->output(400, ["error" => "Parâmetros ausentes"]);
@@ -102,6 +105,16 @@ class ListController
     {
         try {
             $response = $this->listService->getAll($id_user);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function getList($id_user, $id_list): void
+    {
+        try {
+            $response = $this->listService->getList($id_user, $id_list);
             $this->output(200, $response);
         } catch (Exception $e) {
             $this->output(500, ["error" => $e->getMessage()]);

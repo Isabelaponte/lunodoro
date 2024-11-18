@@ -13,28 +13,17 @@ import {
 } from "./CardTask.styles";
 import { Link } from "react-router-dom";
 import { ChipType } from "../../utils/enums/status.enum";
-import { useEffect } from "react";
-import useAuthStore from "../../store/useAuthStore";
 
 interface CardTaskProps {
   onOpenEditModal: () => void;
   onOpenDeleteModal: () => void;
   id: string;
+  nameList: string;
+  description: string;
+  lastUpdate: string;
+  idTypeList: string;
+  create: string;
 }
-
-useEffect(()=> {
-  const token = localStorage.getItem("token");
-  const { user } = useAuthStore.getState();
-
-  if (token) {
-    fetch(`http://localhost/luno/lunodoro/usuarios?id=${user?.id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        
-      })
-  }
-})
 
 const CardTask = ({ ...props }: CardTaskProps) => {
   return (
@@ -52,12 +41,12 @@ const CardTask = ({ ...props }: CardTaskProps) => {
           </OptionsButtonDiv>
         </CardHeader>
         <Link to={`/task-list/${props.id}`}>
-          <CardTitle>Tarefa 1</CardTitle>
+          <CardTitle>{props.nameList}</CardTitle>
         </Link>
-        <CardP>Descrição da tarefa</CardP>
-        <CardP>Tipo: Trabalho</CardP>
+        <CardP>{props.description}</CardP>
+        <CardP>Tipo: {props.idTypeList}</CardP>
         <CardFooter>
-          <CardFooterText>Criado em 12/12/2022</CardFooterText>
+          <CardFooterText>Criado em {props.create}</CardFooterText>
         </CardFooter>
       </StyledCardTask>
     </>

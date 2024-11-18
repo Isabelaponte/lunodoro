@@ -1,15 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardTask from "../../components/CardTask/CardTask";
 import Modals from "../../components/Modal/Modal";
 import { ContainerTaskList, StyledButton } from "./TaskList.styles";
 import CreateEditTaskList from "../CreateEditTaskList/CreateEditTaskList";
 import { Mode } from "../../utils/enums/mode.enum";
 import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import useAuthStore from "../../store/useAuthStore";
+
+interface TaskListData {
+  create: string;
+  description: string;
+  id_list: string;
+  id_type_list: string;
+  lastUpdate: string;
+  name_list: string;
+}
 
 const TaskList = () => {
+  const token = localStorage.getItem("token");
+  const { user } = useAuthStore.getState();
+
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [taskList, setTaskList] = useState<TaskListData[]>([]);
+
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
+  const handleOpenEditModal = (id: string) => {
+    setSelectedTaskId(id);
+    setOpenEditModal(true);
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetch(`http://localhost/luno/lunodoro/lista?id_user=${user?.id}`)
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response);
+          setTaskList(response.data);
+        });
+    } else {
+      console.log("Não tem token");
+    }
+  }, []);
 
   return (
     <>
@@ -32,6 +66,7 @@ const TaskList = () => {
         <CreateEditTaskList
           onClose={() => setOpenEditModal(false)}
           mode={Mode.EDIT}
+          id={selectedTaskId}
         />
       </Modals>
 
@@ -49,7 +84,23 @@ const TaskList = () => {
           Criar nova tarefa
         </StyledButton>
 
-        <CardTask id={"1"} onOpenEditModal={() => setOpenEditModal(true)} onOpenDeleteModal={() => setOpenDeleteModal(true)} />
+        {taskList.length > 0 ? (
+          taskList.map((task) => (
+            <CardTask
+              id={task?.id_list}
+              key={task?.id_list}
+              nameList={task?.name_list}
+              description={task?.description}
+              lastUpdate={task?.lastUpdate}
+              idTypeList={task?.id_type_list}
+              create={task?.create}
+              onOpenEditModal={() => handleOpenEditModal(task?.id_list)}
+              onOpenDeleteModal={() => setOpenDeleteModal(true)}
+            />
+          ))
+        ) : (
+          <p>Nenhuma lista de tarefas cadastrada</p>
+        )}
       </ContainerTaskList>
     </>
   );

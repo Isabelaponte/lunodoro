@@ -96,6 +96,34 @@ class ListService
         ];
     }
 
+    public static function getList(int $id_user, int $id_list): array
+    {
+        $errors = self::validateIDs($id_user, $id_list);
+    
+        if (!empty($errors)) {
+            throw new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
+        }
+    
+        $response = ListRepository::findListFromDatabase($id_user, $id_list);
+    
+        if (!$response) {
+            throw new Exception("Lista não encontrada.");
+        }
+    
+                
+        $formattedList = new Listing(
+            $response['nome_lista'],
+            $response['descricao'], 
+            $response['id_tipo_lista'],
+            $response['id']
+        );
+    
+        return [
+            "status" => "success",
+            "data" => self::formatListData($formattedList)
+        ];
+    }
+
     private static function validateIDs(int $id_user, int $id_list): array
     {
         $errors = [];
