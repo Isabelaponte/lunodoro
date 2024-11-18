@@ -23,7 +23,7 @@ const TaskDetails = () => {
 
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [timer, setTimer] = useState(25 * 60); // Default to Pomodoro time
+  const [timer, setTimer] = useState(25 * 60);
   const [isPomodoro, setIsPomodoro] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
 

@@ -36,10 +36,10 @@ class RelatoryController
         $id_task = $_GET['id_task'] ?? null;
         $id_user = $_GET['id_user'] ?? null;
 
-        if ($id_task && $id_user) {
-            $this->getTotalHoursOfFocus($id_task, $id_user);
-        } else if ($id_user) {
+        if ($id_user) {
             $this->getCompletedTasksByTypeListInLast7Days($id_user);
+        } else if ($id_user && $id_task) {
+            $this->getTotalHoursOfFocus($id_task, $id_user);
         } else {
             $this->output(400, ["error" => "Parâmetros ausentes"]);
         }

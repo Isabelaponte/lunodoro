@@ -43,6 +43,11 @@ background-color: ${({ theme }) => theme.colors.bgColor};
   min-width: 100px;
 `;
 
+export const StyledButtonSecondary = styled(StyledButton)`
+  background-color: #f0f0f0;
+  color: black;
+`;
+
 export const OptionsButtonDiv = styled.div`
   display: flex;
   gap: 1rem;
