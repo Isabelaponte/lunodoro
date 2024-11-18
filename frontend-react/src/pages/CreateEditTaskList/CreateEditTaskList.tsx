@@ -24,15 +24,17 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
   const { user } = useAuthStore.getState();
   const [tipoLista, setTipoLista] = useState<string[]>([]);
 
-  try {
-    fetch(`http://localhost/luno/lunodoro/tipoLista`)
-      .then((response) => response.json())
-      .then((response) => {
-        setTipoLista(response);
-      });
-  } catch (error) {
-    console.log(error);
-  }
+  useEffect(() => {
+    try {
+      fetch(`http://localhost/luno/lunodoro/tipoLista`)
+        .then((response) => response.json())
+        .then((response) => {
+          setTipoLista(response);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const schema = yup.object({
     name: yup.string().required("Campo obrigatório"),
@@ -40,26 +42,31 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
     type: yup.string().required("Campo obrigatório"),
   });
 
-  const { handleSubmit, trigger, control, setValue } = useFormUtils<any>(schema, {
-    name: "",
-    description: "",
-    type: "",
-  });
+  const { handleSubmit, trigger, control, setValue } = useFormUtils<any>(
+    schema,
+    {
+      name: "",
+      description: "",
+      type: "",
+    }
+  );
 
-  useEffect(()=> {
+  useEffect(() => {
     const setFormValues = (data: any) => {
       setValue("name", data.name_list);
       setValue("description", data.description);
       setValue("type", data.id_type_list);
-    }
+    };
 
     if (props.mode === Mode.EDIT) {
-      console.log('eeeieieeee', props.id);
-      fetch(`http://localhost/luno/lunodoro/lista?id_user=${user?.id}&id_list=${props.id}`)
+      console.log("eeeieieeee", props.id);
+      fetch(
+        `http://localhost/luno/lunodoro/lista?id_user=${user?.id}&id_list=${props.id}`
+      )
         .then((response) => response.json())
         .then((response) => {
           console.log(response);
-          
+
           setFormValues(response.data);
         });
     }
@@ -83,7 +90,7 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
           }),
         })
           .then((response) => {
-            if (response.status !== 'success') {
+            if (response.status !== "success") {
               throw new Error(`Erro ao criar lista: ${response.statusText}`);
             }
             return response.json();
@@ -101,7 +108,38 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
         console.log(error);
       }
     } else {
-      //TODO: aqui terá a chamada api para criar uma editar uma lista de tarefas e para receber os valores do select (confirmar)
+      try {
+        fetch(`http://localhost/luno/lunodoro/lista`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            id_user: user?.id.toString() || "",
+            id_list: props.id.toString(),
+            name_list: data?.name,
+            description: data?.description,
+            id_type_list: data?.type,
+          }),
+        })
+          .then((response) => {
+            if (response.status !== "success") {
+              throw new Error(`Erro ao criar lista: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((result) => {
+            console.log("Lista atualizada com sucesso:", result);
+            props.onClose();
+          })
+          .catch((error) => {
+            console.error("Erro ao editar lista:", error);
+          });
+
+        props.onClose();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -142,7 +180,7 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
             select
             required
           >
-            {tipoLista.map((tipo : any) => (
+            {tipoLista.map((tipo: any) => (
               <MenuItem value={tipo.id} key={tipo.id}>
                 {tipo.descricao}
               </MenuItem>
@@ -154,7 +192,7 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
       <SpanInfo>*Acesse a lista para adicionar tarefas</SpanInfo>
 
       <DivOptions>
-        <StyledButton type="submit">Criar</StyledButton>
+        <StyledButton type="submit">Salvar</StyledButton>
         <CancelButton type="button" onClick={props.onClose}>
           Cancelar
         </CancelButton>

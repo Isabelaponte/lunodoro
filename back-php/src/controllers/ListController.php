@@ -33,6 +33,9 @@ class ListController
                 case 'PUT':
                     $this->handlePut();
                     break;
+                case 'OPTIONS':
+                    $this->output(200, ["message" => "OK"]);
+                    break;
                 case 'DELETE':
                     $this->handleDelete();
                     break;
