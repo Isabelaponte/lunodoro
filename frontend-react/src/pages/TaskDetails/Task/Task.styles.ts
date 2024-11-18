@@ -10,6 +10,7 @@ export const TaskItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: black;
 
   &.pending {
     border-color: #FFC107;
@@ -21,14 +22,20 @@ export const TaskDetails = styled.div`
   margin-top: 10px;
   padding: 10px;
   border-top: 1px solid #ddd;
+  color: black;
 `;
 
 export const ExpandButton = styled.button`
   margin-top: 10px;
-  color: #fff;
+  color: black;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px;
   text-align: right;
+`;
+
+export const TaskName = styled.h2`
+  margin-bottom: 10px;
+  font-size: 20px;
 `;
