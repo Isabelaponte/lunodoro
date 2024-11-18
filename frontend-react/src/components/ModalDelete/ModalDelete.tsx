@@ -1,46 +1,40 @@
+import useAuthStore from "../../store/useAuthStore";
 import ModalConfirmBase from "../ModalConfirmBase/ModalConfirmBase";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
-interface ModalDeleteProps {
+interface ModalDeleteListProps {
   open: boolean;
   onClose: () => void;
-  title: string;
-  id: string;
-  queryKey?: string;
-  queryFn: (id: string) => any;
+  id: string | null;
 }
 
-const ModalDelete = ({
-  open,
-  onClose,
-  queryKey = "Posts",
-  queryFn,
-  title,
-  id,
-}: ModalDeleteProps) => {
-
-  //TODO: add logica de deletar a api
+const ModalDeleteList = ({ open, onClose, id }: ModalDeleteListProps) => {
+  const { user } = useAuthStore.getState();
+  
   const confirmDelete = async () => {
-    // await queryFn(id);
+    fetch(
+      `http://localhost/luno/lunodoro/lista?id_user=${user?.id}&id_list=${id}` ,{
+        method: "DELETE"
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+      });
     onClose();
   };
-
-  // console.log(queryKey);
-  // console.log(queryFn);
-  // console.log(title);
-  // console.log(id);
 
   return (
     <ModalConfirmBase
       open={open}
       onClose={() => onClose()}
-      onConfirm={() => {}}
+      onConfirm={() => confirmDelete()}
       icon={<CloseOutlinedIcon />}
-      content={`Deseja deletar "${title}"?`}
+      content={`Deseja deletar o item selecionado?`}
       confirmText={"Deletar"}
       cancelText={"Cancelar"}
     />
   );
 };
 
-export default ModalDelete;
+export default ModalDeleteList;

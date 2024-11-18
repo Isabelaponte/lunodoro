@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 interface CreateTaskListProps {
   onClose: () => void;
   mode?: Mode;
-  id?: string;
+  id?: string | null;
 }
 
 const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
@@ -59,7 +59,6 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
     };
 
     if (props.mode === Mode.EDIT) {
-      console.log("eeeieieeee", props.id);
       fetch(
         `http://localhost/luno/lunodoro/lista?id_user=${user?.id}&id_list=${props.id}`
       )
@@ -116,7 +115,7 @@ const CreateEditTaskList = ({ ...props }: CreateTaskListProps) => {
           },
           body: new URLSearchParams({
             id_user: user?.id.toString() || "",
-            id_list: props.id.toString(),
+            id_list: props?.id.toString() || "",
             name_list: data?.name,
             description: data?.description,
             id_type_list: data?.type,

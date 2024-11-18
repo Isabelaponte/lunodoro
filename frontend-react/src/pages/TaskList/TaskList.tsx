@@ -4,7 +4,7 @@ import Modals from "../../components/Modal/Modal";
 import { ContainerTaskList, StyledButton } from "./TaskList.styles";
 import CreateEditTaskList from "../CreateEditTaskList/CreateEditTaskList";
 import { Mode } from "../../utils/enums/mode.enum";
-import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import ModalDeleteList from "../../components/ModalDelete/ModalDelete";
 import useAuthStore from "../../store/useAuthStore";
 
 interface TaskListData {
@@ -30,6 +30,11 @@ const TaskList = () => {
   const handleOpenEditModal = (id: string) => {
     setSelectedTaskId(id);
     setOpenEditModal(true);
+  };
+
+  const handleOpenDeleteModal = (id: string) => {
+    setSelectedTaskId(id);
+    setOpenDeleteModal(true);
   };
 
   useEffect(() => {
@@ -70,12 +75,10 @@ const TaskList = () => {
         />
       </Modals>
 
-      <ModalDelete
+      <ModalDeleteList
         open={openDeleteModal}
         onClose={() => setOpenDeleteModal(false)}
-        title={"tarefa1"}
-        id={"1"}
-        queryFn={() => {}}
+        id={selectedTaskId}
       />
 
       <ContainerTaskList>
@@ -95,7 +98,7 @@ const TaskList = () => {
               idTypeList={task?.id_type_list}
               create={task?.create}
               onOpenEditModal={() => handleOpenEditModal(task?.id_list)}
-              onOpenDeleteModal={() => setOpenDeleteModal(true)}
+              onOpenDeleteModal={() => handleOpenDeleteModal(task?.id_list)}
             />
           ))
         ) : (
