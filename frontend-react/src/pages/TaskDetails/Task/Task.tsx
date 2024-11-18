@@ -69,7 +69,6 @@ const Task = ({ task }: { task: any }) => {
         <StyledButtonSecondary onClick={() => handleDeleteTask(task.id)}>
           Excluir
         </StyledButtonSecondary>
-        <StyledButtonSecondary>Editar</StyledButtonSecondary>
       </AccordionDetails>
     </Accordion>
   );

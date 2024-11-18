@@ -27,18 +27,16 @@ class RelatoryRepository
         try {
             $conn = Connection::getConnection();
             $stmt = $conn->prepare("
-            SELECT tl.descricao AS tipo_lista, COUNT(t.id) AS quantidade_tarefas
+            SELECT COALESCE(SUM(TIMESTAMPDIFF(HOUR, t.dt_inicio, t.dt_final)), 0) AS total_tempo
             FROM tarefa t
             INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
             INNER JOIN lista l ON lt.id_lista = l.id
-            INNER JOIN tipo_lista tl ON l.id_tipo_lista = tl.id
-            WHERE t.status = 'concluida' 
-              AND t.dt_final >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-              AND l.id_usuario = ?
-            GROUP BY tl.descricao
+            WHERE t.status = 'concluída' 
+            AND t.dt_final >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+            AND l.id_usuario = ?;
         ");
             $stmt->execute([$id_user]);
-            return $stmt->fetchAll();
+            return $stmt->fetch();
         } catch (PDOException $e) {
             throw new Exception("Erro ao acessar as tarefas efetuadas", 500);
         }
