@@ -7,94 +7,141 @@ require_once(__DIR__ . '/../config/utils.php');
 header("Access-Control-Allow-Methods: POST, GET, DELETE");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$url = explode('/', $_SERVER['REQUEST_URI']);
-$id_usuario = isset($url[3]) ? (int)$url[3] : 0;
-$id_lista = isset($url[5]) ? (int)$url[5] : 0;
-$id_tarefa = isset($url[7]) ? (int)$url[7] : 0;
+class TaskListController
+{
 
+    private TaskListService $taskListService;
 
-if (validatorMethodServer('POST')) {
-    if ($id_lista && $id_tarefa){
+    public function __construct(TaskListService $taskListService)
+    {
+        $this->taskListService = $taskListService;
+    }
+
+    public function handleRequest(string $method): void
+    {
         try {
-            $response = TaskListService::createListTask(
-                $id_lista,
-                $id_tarefa
+            $method = strtoupper($method);
+            switch ($method) {
+                case 'POST':
+                    $this->handlePost();
+                    break;
+                case 'GET':
+                    $this->handleGet();
+                    break;
+                case 'DELETE':
+                    $this->handleDelete();
+                    break;
+                default:
+                    $this->output(405, ["error" => "Método não permitido"]);
+                    break;
+            }
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
 
+    private function handlePost(): void
+    {
+        $params = $this->getRequestParams(['id_list', 'id_task']);
+        if ($params) {
+            $this->createTaskList(
+                $params['id_list'],
+                $params['id_task']
             );
-            output(201, $response);
-        } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
     }
-}
 
-if (validatorMethodServer('GET') && $id_usuario && $id_lista) {
-    try {
-        $response = TaskListService::getAllTasksByList($id_lista, $id_usuario);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
-    }
-    if (isset($_GET['id_tarefa']) && isset($_GET['id_usuario'])) {
+    private function createTaskList($id_list, $id_task): void
+    {
         try {
-            $response = TaskListService::getAllListsByTask($_GET['id_tarefa'], $_GET['id_usuario']);
-            output(200, $response);
+            $taskList = new TaskList($id_list, $id_task);
+            $response = $this->taskListService->createListTask($taskList);
+            $this->output(201, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
     }
-    if (isset($_GET['id_usuario'])) {
+
+    private function handleGet(): void
+    {
+        $id_task = $_GET['id_task'] ?? null;
+        $id_user = $_GET['id_user'] ?? null;
+        $id_list = $_GET['id_list'] ?? null;
+
+        if ($id_list && $id_user) {
+            $this->getAllTasksByList($id_list, $id_user);
+        } else if ($id_task && $id_user) {
+            $this->getAllListsByTask($id_task, $id_user);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function getAllTasksByList($id_list, $id_user): void
+    {
         try {
-            $response = TaskListService::getCompletedTasksByTypeListInLast7Days($_GET['id_usuario']);
-            output(200, $response);
+            $response = $this->taskListService->getAllTasksByList($id_list, $id_user);
+            $this->output(200, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
     }
-    output(400, ["error" => "Parâmetros ausentes"]);
-}
 
-<<<<<<< HEAD
-if (validatorMethodServer('GET') && $id_tarefa && isset($id_usuario)) {
-    try {
-        $response = TaskListService::getAllListsByTask($id_tarefa, $id_usuario);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
-    }
-}
-
-if (validatorMethodServer('GET') && isset($id_usuario)){
-    try {
-        $response = TaskListService::getCompletedTasksByTypeListInLast7Days($id_usuario);
-        output(200, $response);
-    } catch (Exception $e) {
-        output($e->getCode(), ["error" => $e->getMessage()]);
-    }
-}
-=======
->>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
-
-if (validatorMethodServer('DELETE')) {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    if ($id_lista && $id_tarefa) {
+    private function getAllListsByTask($id_task, $id_user): void
+    {
         try {
-<<<<<<< HEAD
-            $response = TaskService::deleteTask($id_lista, $id_tarefa);
-            output(200,$response);
-=======
-            $response = TaskService::deleteTask($_DELETE['id_lista'], $_DELETE['id_tarefa']);
-            output(200, $response);
->>>>>>> 55e43e10e61ba14c44b048da620cd686a0542dff
+            $response = $this->taskListService->getAllListsByTask($id_task, $id_user);
+            $this->output(200, $response);
         } catch (Exception $e) {
-            output($e->getCode(), ["error" => $e->getMessage()]);
+            $this->output(500, ["error" => $e->getMessage()]);
         }
-    } else {
-        output(400, ["error" => "Parâmetros ausentes"]);
+    }
+
+    private function handleDelete(): void
+    {
+        $id_list = $_GET['id_list'] ?? null;
+        $id_task = $_GET['id_task'] ?? null;
+
+        if ($id_list && $id_task) {
+            $this->deleteTask($id_list, $id_task);
+        } else {
+            $this->output(400, ["error" => "Parâmetros ausentes"]);
+        }
+    }
+
+    private function deleteTask($id_list, $id_task): void
+    {
+        try {
+            $response = $this->taskListService->removeTaskList($id_list, $id_task);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+
+    private function getRequestParams(array $keys, array $inputData = null): ?array
+    {
+        $inputData = $inputData ?: $_POST;
+        $params = [];
+        foreach ($keys as $key) {
+            if (empty($inputData[$key])) {
+                return null;
+            }
+            $params[$key] = $inputData[$key];
+        }
+        return $params;
+    }
+
+    private function output(int $statusCode, array $response): void
+    {
+        http_response_code($statusCode);
+        echo json_encode($response);
     }
 }
 
-output(400, ["error" => "Tipo de requisição não aceita"]);
+$controller = new TaskListController(new TaskListService());
+$controller->handleRequest($_SERVER['REQUEST_METHOD']);

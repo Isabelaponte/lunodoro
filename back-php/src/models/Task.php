@@ -9,8 +9,7 @@ class Task {
     private $status;
     private $list_id;
 
-    public function __construct($id, $name, $description, $end_date, $status, $list_id) {
-        $this->id = $id;
+    public function __construct($name, $description, $end_date, $status, $list_id = null) {
         $this->name = $name;
         $this->description = $description;
         $this->end_date = $end_date;

@@ -2,79 +2,32 @@
 
 class TaskList
 {
-    private $id;
-    private $name_list;
-    private $type_list;
-    private $dt_creation;
-    private $dt_atualization;
-    private $id_user;
-    private $description;
+    private $id_task;
+    private $id_list;
 
-    public function __construct($id, $name_list, $type_list, $id_user, $description)
+    public function __construct($id_list, $id_task)
     {
-        $this->id = $id;
-        $this->name_list = $name_list;
-        $this->type_list = $type_list;
-        $this->id_user = $id_user;
-        $this->description = $description;
+        $this->id_list = $id_list;
+        $this->id_task = $id_task;
     }
 
-    public function getId()
+    public function getIdList()
     {
-        return $this->id;
+        return $this->id_list;
     }
 
-    public function getNameList()
+    public function getIdTask()
     {
-        return $this->name_list;
+        return $this->id_task;
     }
 
-    public function getTypeList()
+    public function setIdList($id_list)
     {
-        return $this->type_list;
+        $this->id_list = $id_list;
     }
 
-    public function getDtCriacao()
+    public function setIdTask($id_task)
     {
-        return $this->dt_creation;
-    }
-
-    public function getDtAtualization()
-    {
-        return $this->dt_atualization;
-    }
-
-    public function getIdUser()
-    {
-        return $this->id_user;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function setNameList($name_list)
-    {
-        $this->name_list = $name_list;
-    }
-
-    public function setTypeList($type_list)
-    {
-        $this->type_list = $type_list;
-    }
-
-    public function setUserId($id_user)
-    {
-        $this->id_user = $id_user;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
+        $this->id_task = $id_task;
     }
 }
