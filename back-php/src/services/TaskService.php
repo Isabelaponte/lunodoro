@@ -119,7 +119,7 @@ class TaskService
             return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
         }
 
-        $response = TaskRepository::removeTask($task_id, $id_usuario);
+        $response = TaskRepository::removeTask($id_usuario, $task_id);
 
         if (!$response) {
             throw new RuntimeException("Erro ao remover a tarefa. Tente novamente mais tarde.");

@@ -18,7 +18,7 @@ interface NotificationState {
 
 export const useNotificationStore = create<NotificationState>((set) => ({
   notification: null,
-  notify: (notification: Notification, duration = 3000) => {
+  notify: (notification: Notification, duration = 5000) => {
     set({ notification });
     setTimeout(() => {
       set({ notification: null });

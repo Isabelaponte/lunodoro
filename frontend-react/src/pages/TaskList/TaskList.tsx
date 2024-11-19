@@ -6,6 +6,8 @@ import CreateEditTaskList from "../CreateEditTaskList/CreateEditTaskList";
 import { Mode } from "../../utils/enums/mode.enum";
 import ModalDeleteList from "../../components/ModalDelete/ModalDelete";
 import useAuthStore from "../../store/useAuthStore";
+import { Severety, useNotificationStore } from "../../store/useNotification";
+import { Alert } from "@mui/material";
 
 interface TaskListData {
   create: string;
@@ -20,6 +22,9 @@ const TaskList = () => {
   const token = localStorage.getItem("token");
   const { user } = useAuthStore.getState();
 
+  const notify = useNotificationStore((state) => state.notify);
+  const notification = useNotificationStore((state) => state.notification);
+
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -28,13 +33,21 @@ const TaskList = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const handleOpenEditModal = (id: string) => {
-    setSelectedTaskId(id);
-    setOpenEditModal(true);
+    if (token) {
+      setSelectedTaskId(id);
+      setOpenEditModal(true);
+    } else {
+      notify({ message: "Você não pode editar listas sem estar logado.", severety: Severety.WARNING });
+    }
   };
 
   const handleOpenDeleteModal = (id: string) => {
-    setSelectedTaskId(id);
-    setOpenDeleteModal(true);
+    if (token) {
+      setSelectedTaskId(id);
+      setOpenDeleteModal(true);
+    } else {
+      notify({ message: "Você não pode deletar listas sem estar logado.", severety: Severety.WARNING });
+    }
   };
 
   useEffect(() => {
@@ -45,12 +58,38 @@ const TaskList = () => {
           setTaskList(response.data);
         });
     } else {
-      console.log("Não tem token");
+      const storedLists = localStorage.getItem("taskLists");
+      if (storedLists) {
+        setTaskList(JSON.parse(storedLists));
+      }
     }
-  }, []);
+  }, [token, user?.id, notification]);
+
+  const saveListToLocalStorage = (newList: TaskListData) => {
+    const existingLists = JSON.parse(localStorage.getItem("taskLists") || "[]");
+    existingLists.push(newList);
+    localStorage.setItem("taskLists", JSON.stringify(existingLists));
+    setTaskList(existingLists);
+  };
+
+  const handleCreateList = () => {
+    if (!token && taskList.length >= 3) {
+      notify({ message: "Você já tem o máximo de 3 listas cadastradas, realize login para criar mais listas.", severety: Severety.WARNING });
+    } else {
+      setOpenCreateModal(true);
+    }
+  };
 
   return (
     <>
+      {notification && (
+        <Alert
+          severity={notification.severety}
+          sx={{ width: "95vw", position: "absolute" }}
+        >
+          {notification.message}
+        </Alert>
+      )}
       <Modals
         open={openCreateModal}
         name={"Adicionar nova lista"}
@@ -59,6 +98,7 @@ const TaskList = () => {
         <CreateEditTaskList
           onClose={() => setOpenCreateModal(false)}
           mode={Mode.CREATE}
+          onSave={saveListToLocalStorage}
         />
       </Modals>
 
@@ -82,7 +122,7 @@ const TaskList = () => {
 
       <ContainerTaskList>
         <h1>Lista de Tarefas</h1>
-        <StyledButton onClick={() => setOpenCreateModal(true)}>
+        <StyledButton onClick={handleCreateList}>
           Criar nova tarefa
         </StyledButton>
 

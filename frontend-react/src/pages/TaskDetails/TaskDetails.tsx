@@ -14,12 +14,18 @@ import { ContainerTaskList } from "../TaskList/TaskList.styles";
 import Modals from "../../components/Modal/Modal";
 import CreateEditTask from "../CreateEditTask/CreateEditTask";
 import useAuthStore from "../../store/useAuthStore";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Severety, useNotificationStore } from "../../store/useNotification";
+import { Alert } from "@mui/material";
 
 const TaskDetails = () => {
   const token = localStorage.getItem("token");
   const { user } = useAuthStore.getState();
   const { taskId } = useParams();
+
+  const navigate = useNavigate();
+  const notify = useNotificationStore((state) => state.notify);
+  const notification = useNotificationStore((state) => state.notification);
 
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,18 +35,18 @@ const TaskDetails = () => {
 
   useEffect(() => {
     if (token) {
-      fetch(`http://localhost/luno/lunodoro/usuarios/tarefas?id_taskList=${taskId}&id_user=${user?.id}`)
+      fetch(
+        `http://localhost/luno/lunodoro/usuarios/tarefas?id_taskList=${taskId}&id_user=${user?.id}`
+      )
         .then((response) => response.json())
         .then((response) => {
           setTasks(response.data);
         });
-    } else {
-      console.log("Não tem token");
     }
-  }, [token, taskId, user]);
+  }, [token, taskId, user, notification]);
 
   useEffect(() => {
-    let interval : any;
+    let interval: any;
     if (isRunning) {
       interval = setInterval(() => {
         setTimer((prev) => {
@@ -69,7 +75,10 @@ const TaskDetails = () => {
       }
       setIsRunning(true);
     } else {
-      alert("No tasks available to start the timer!");
+      notify({
+        message: "Não há tarefas disponíveis para iniciar o cronômetro.",
+        severety: Severety.WARNING,
+      });
     }
   };
 
@@ -85,63 +94,95 @@ const TaskDetails = () => {
     setTimer(5 * 60);
   };
 
-  const formatTime = (seconds : number) => {
+  const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
   };
 
   const handleAddTask = () => {
-    setIsModalOpen(true);
+    if (!token) {
+      notify({
+        message: "Para adicionar uma tarefa, faça login ou crie uma conta.",
+        severety: Severety.WARNING,
+      });
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   return (
-    <ContainerTaskList>
-      <Modals open={isModalOpen} name={"Adicionar nova tarefa"} onClose={() => setIsModalOpen(false)}>
-        <CreateEditTask id_list={taskId} />
-      </Modals>
-      <TimerSection>
-        <TimerHeader>
-          <TimerContainerControls>
-            <TimerControls
-              onClick={handleSelectPomodoro}
-              style={{
-                background: isPomodoro ? "rgba(255, 255, 255, 0.2)" : "transparent",
-              }}
-            >
-              Pomodoro
-            </TimerControls>
-            <TimerControls
-              onClick={handleSelectBreak}
-              style={{
-                background: !isPomodoro ? "rgba(255, 255, 255, 0.2)" : "transparent",
-              }}
-            >
-              Descanso
-            </TimerControls>
-          </TimerContainerControls>
-        </TimerHeader>
-        <p style={{ fontSize: "5rem", margin: "2rem" }}>{formatTime(timer)}</p>
-        <TimerButton onClick={handleStartTimer}>
-          {isRunning ? "Em Andamento..." : "Iniciar"}
-        </TimerButton>
-      </TimerSection>
+    <>
+      {notification && (
+        <Alert
+          severity={notification.severety}
+          sx={{ width: "95vw", position: "absolute" }}
+        >
+          {notification.message}
+        </Alert>
+      )}
+      <ContainerTaskList>
+        <Modals
+          open={isModalOpen}
+          name={"Adicionar nova tarefa"}
+          onClose={() => setIsModalOpen(false)}
+        >
+          <CreateEditTask id_list={taskId} onClose={() => setIsModalOpen(false)} />
+        </Modals>
+        <TimerSection>
+          <TimerHeader>
+            <TimerContainerControls>
+              <TimerControls
+                onClick={handleSelectPomodoro}
+                style={{
+                  background: isPomodoro
+                    ? "rgba(255, 255, 255, 0.2)"
+                    : "transparent",
+                }}
+              >
+                Pomodoro
+              </TimerControls>
+              <TimerControls
+                onClick={handleSelectBreak}
+                style={{
+                  background: !isPomodoro
+                    ? "rgba(255, 255, 255, 0.2)"
+                    : "transparent",
+                }}
+              >
+                Descanso
+              </TimerControls>
+            </TimerContainerControls>
+          </TimerHeader>
+          <p style={{ fontSize: "5rem", margin: "2rem" }}>
+            {formatTime(timer)}
+          </p>
+          <TimerButton onClick={handleStartTimer}>
+            {isRunning ? "Em Andamento..." : "Iniciar"}
+          </TimerButton>
+        </TimerSection>
 
-      <section>
-        <TasksHeader>
-          <Button>Voltar</Button>
-          <Button onClick={handleAddTask}>Adicionar Tarefa</Button>
-        </TasksHeader>
+        <section>
+          <TasksHeader>
+            <Button onClick={() => navigate("/task-list")}>Voltar</Button>
+            <Button onClick={handleAddTask}>Adicionar Tarefa</Button>
+          </TasksHeader>
 
-        <TaskList id="taskList">
-          {tasks.length > 0 ? (
-            tasks.map((task, index) => <Task key={index} task={task} />)
-          ) : (
-            <p>No tasks available</p>
+          <TaskList id="taskList">
+            {tasks.length > 0 ? (
+              tasks.map((task, index) => <Task key={index} task={task} />)
+            ) : (
+              <p>Nenhuma tarefa cadastrada!</p>
+            )}
+          </TaskList>
+          {!token && (
+            <p>Para adicionar uma tarefa, faça login ou crie uma conta.</p>
           )}
-        </TaskList>
-      </section>
-    </ContainerTaskList>
+        </section>
+      </ContainerTaskList>
+    </>
   );
 };
 

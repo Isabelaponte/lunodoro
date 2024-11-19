@@ -22,8 +22,6 @@ const ReportPage = () => {
         .then((response) => {
           setHours(response.data.total_tempo);
         });
-    } else {
-      console.log("Não tem token");
     }
   }, [token]);
 

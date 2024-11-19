@@ -30,13 +30,14 @@ const Task = ({ task }: { task: any }) => {
           method: "DELETE",
         }
       );
-
-      const responseJson = await response.json();
-      console.log(responseJson);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onCompleteTask = async (id: string) => {
+    console.log('aiai');
+  }
 
   return (
     <Accordion
@@ -65,7 +66,13 @@ const Task = ({ task }: { task: any }) => {
         <Typography>
           <strong>Status:</strong> {task.status || "Não definido"}
         </Typography>
-        <StyledButton>Concluir</StyledButton>
+        {task.status !== "Concluída" && (
+          <>
+            <StyledButton onClick={() => onCompleteTask(task.id)}>
+              Concluir
+            </StyledButton>
+          </>
+        )}
         <StyledButtonSecondary onClick={() => handleDeleteTask(task.id)}>
           Excluir
         </StyledButtonSecondary>

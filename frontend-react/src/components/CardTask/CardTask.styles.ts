@@ -51,6 +51,8 @@ export const StyledButtonSecondary = styled(StyledButton)`
 export const OptionsButtonDiv = styled.div`
   display: flex;
   gap: 1rem;
+  width: 100%;
+  justify-content: flex-end;
 `;
 
 export const EditButton = styled.button`

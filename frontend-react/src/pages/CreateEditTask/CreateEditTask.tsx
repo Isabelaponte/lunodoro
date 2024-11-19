@@ -8,13 +8,10 @@ import * as yup from "yup";
 import { useFormUtils } from "../../utils/form.utils";
 import { Controller } from "react-hook-form";
 import { StyledButton } from "../Home/Home.styles";
-import useAuthStore from "../../store/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { Severety, useNotificationStore } from "../../store/useNotification";
 
-const CreateEditTask = ({ id_list }: any) => {
-  const token = localStorage.getItem("token");
-  const { user } = useAuthStore.getState();
-  const navigate = useNavigate();
+const CreateEditTask = ({ id_list, onClose }: any) => {
+  const notify = useNotificationStore((state) => state.notify);
 
   const schema = yup.object({
     name: yup.string().required("Campo obrigatório"),
@@ -49,13 +46,15 @@ const CreateEditTask = ({ id_list }: any) => {
       );
 
       if (response.ok) {
-        navigate("/task-list");
-      } else {
-        const responseJson = await response.json();
-        console.log(responseJson);
+        notify({
+          message: "Tarefa adicionada com sucesso!",
+          severety: Severety.SUCCESS,
+        });
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      onClose();
     }
   };
 
