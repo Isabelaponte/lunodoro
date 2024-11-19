@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import TableComponent from "../../components/Table/Table";
 import useAuthStore from "../../store/useAuthStore";
 import {
   CardReport,
@@ -37,13 +36,6 @@ const ReportPage = () => {
         )}
         <StyledP>Horas focadas nos útimos 7 dias: {hours===0 ? "--" : hours} hora(s)</StyledP>
 
-        <StyledH3>Detalhes de Tempo de Foco</StyledH3>
-        {!token && (
-          <SpanInfoStyled>
-            * Este relatório estará disponível quando você estiver logado
-          </SpanInfoStyled>
-        )}
-        <TableComponent />
       </CardReport>
     </StyledContainerReport>
   );
