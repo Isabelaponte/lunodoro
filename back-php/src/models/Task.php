@@ -10,7 +10,7 @@ class Task {
     private $duracao;
     private $list_id;
 
-    public function __construct($name, $description, $status, $list_id = null) {
+    public function __construct($status, $name = null, $description = null, $list_id = null) {
         $this->name = $name;
         $this->description = $description;
         $this->status = $status;

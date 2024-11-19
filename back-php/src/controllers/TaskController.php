@@ -82,7 +82,16 @@ class TaskController
     private function handlePut(): void
     {
         parse_str(file_get_contents("php://input"), $_PUT);
-        $params = $this->getRequestParams(['name', 'description', 'end_date', 'status', 'id_user', 'id_task'], $_PUT);
+        $params = $this->getRequestParams(['name', 'description', 'end_date', 'status', 'id_user', 'id_task', 'finalize'], $_PUT);
+
+        if(!empty($params['finalize']) && filter_var($params['finalize'], FILTER_VALIDATE_BOOLEAN)){
+            $this->finalizeTask(
+                $params['status'],
+                $params['id_user'],
+                $params['id_task']
+            );
+        }
+
         if ($params) {
             $this->updateTask(
             $params['name'],
@@ -111,7 +120,7 @@ class TaskController
     private function createTask($name, $description, $status, $list_id): void
     {
         try {
-            $task = new Task($name, $description, $status, $list_id);
+            $task = new Task($status,$name, $description, $list_id);
             $response = $this->taskService->createTask($task);
             if (!is_array($response)) {
                 throw new Exception("Invalid response format from TaskService::createTask");
@@ -146,9 +155,21 @@ class TaskController
     private function updateTask($name, $description, $status, $id_user, $id_task): void
     {
         try {
-            $task = new Task($name, $description, $status);
+            $task = new Task($status,$name, $description);
             $task->setId($id_task);
             $response = $this->taskService->updateTask($task, $id_user);
+            $this->output(200, $response);
+        } catch (Exception $e) {
+            $this->output(500, ["error" => $e->getMessage()]);
+        }
+    }
+    
+    private function finalizeTask($status, $id_user, $id_task): void
+    {
+        try {
+            $task = new Task($status);
+            $task->setId($id_task);
+            $response = $this->taskService->finalizeTask($task, $id_user);
             $this->output(200, $response);
         } catch (Exception $e) {
             $this->output(500, ["error" => $e->getMessage()]);
