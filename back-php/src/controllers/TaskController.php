@@ -87,7 +87,6 @@ class TaskController
             $this->updateTask(
             $params['name'],
             $params['description'],
-            $params['end_date'],
             $params['status'],
             $params['id_user'],
             $params['id-task']

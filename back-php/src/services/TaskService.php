@@ -74,7 +74,6 @@ class TaskService
         $errors = TaskValidator::validate(
             $task->getName(),
             $task->getDescription(),
-            $task->getEndDate(),
             $task->getStatus()
         );
 
@@ -111,15 +110,15 @@ class TaskService
         ];
     }
 
-    public static function deleteTask($task_id, $id_usuario)
+    public static function deleteTask($task_id, $id_user)
     {
-        $errors = validateIDs($task_id, $id_usuario);
+        $errors = validateIDs($task_id, $id_user);
 
         if (!empty($errors)) {
             return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
         }
 
-        $response = TaskRepository::removeTask($id_usuario, $task_id);
+        $response = TaskRepository::removeTask( $id_user, $task_id);
 
         if (!$response) {
             throw new RuntimeException("Erro ao remover a tarefa. Tente novamente mais tarde.");
