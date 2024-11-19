@@ -10,15 +10,15 @@ class TaskRepository
         try {
             $conn = Connection::getConnection();
             $conn->beginTransaction();
-            
+
             $stmt = $conn->prepare("INSERT INTO tarefa (nome, descricao, status) VALUES (?, ?, ?)");
             $stmt->execute([$name, $description, $status]);
-            
+
             $id_tarefa = $conn->lastInsertId();
-            
+
             $stmtListaTarefa = $conn->prepare("INSERT INTO lista_tarefa (id_lista, id_tarefa) VALUES (?, ?)");
             $stmtListaTarefa->execute([$id_list, $id_tarefa]);
-            
+
             $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
@@ -31,7 +31,7 @@ class TaskRepository
     {
         try {
             $conn = Connection::getConnection();
-            
+
             $stmt = $conn->prepare("
                 SELECT t.* 
                 FROM tarefa t
@@ -40,7 +40,7 @@ class TaskRepository
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
             $stmt->execute([$id_task, $id_user]);
-            
+
             return $stmt->fetch();
         } catch (PDOException $e) {
             throw new Exception("Erro ao acessar os dados", 500);
@@ -48,41 +48,64 @@ class TaskRepository
     }
 
     public static function findAllTasksFromDatabase($id_user, $id_taskList)
-{
-    try {
-        $conn = Connection::getConnection();
-        
-        $stmt = $conn->prepare("
+    {
+        try {
+            $conn = Connection::getConnection();
+
+            $stmt = $conn->prepare("
             SELECT t.* 
             FROM tarefa t
             INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
             INNER JOIN lista l ON lt.id_lista = l.id
             WHERE l.id_usuario = ? AND l.id = ?
         ");
-        $stmt->execute([$id_user, $id_taskList]);
+            $stmt->execute([$id_user, $id_taskList]);
 
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
-        throw new Exception("Erro ao acessar os dados: " . $e->getMessage(), 500);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao acessar os dados: " . $e->getMessage(), 500);
+        }
     }
-}
 
 
-    public static function updateTask($id_user, $id_task, $name, $description, $end_date, $status)
+    public static function updateTask($id_user, $id_task, $name, $description, $status)
     {
         try {
             $conn = Connection::getConnection();
             $conn->beginTransaction();
-            
+
             $stmt = $conn->prepare("
                 UPDATE tarefa t
                 INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
                 INNER JOIN lista l ON lt.id_lista = l.id
-                SET t.nome = ?, t.descricao = ?, t.dt_final = ?, t.status = ?
+                SET t.nome = ?, t.descricao = ?, t.status = ?
                 WHERE t.id = ? AND l.id_usuario = ?
             ");
-            $stmt->execute([$name, $description, $end_date, $status, $id_task, $id_user]);
-            
+            $stmt->execute([$name, $description, $status, $id_task, $id_user]);
+
+            $conn->commit();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            throw new Exception("Erro ao atualizar a tarefa", 500);
+        }
+    }
+
+    public static function finalizeTask($id_user, $id_task, $status)
+    {
+        try {
+            $conn = Connection::getConnection();
+            $conn->beginTransaction();
+
+            $stmt = $conn->prepare("
+                UPDATE tarefa t
+                INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
+                INNER JOIN lista l ON lt.id_lista = l.id
+                SET t.status = ?, t.dt_final = ?
+                WHERE t.id = ? AND l.id_usuario = ?
+            ");
+            $stmt->execute([$status, date("Y/m/d H:i:s"), $id_task, $id_user]);
+
             $conn->commit();
             return $stmt->rowCount();
         } catch (PDOException $e) {
@@ -96,15 +119,22 @@ class TaskRepository
         try {
             $conn = Connection::getConnection();
             $conn->beginTransaction();
-            
+
+            $stmt = $conn->prepare("
+                DELETE lt
+                FROM lista_tarefa lt
+                INNER JOIN lista l ON lt.id_lista = l.id
+                WHERE lt.id_tarefa = ? AND l.id_usuario = ?;
+            "); 
+            $stmt->execute([$id_task, $id_user]);
+
             $stmt = $conn->prepare("
                 DELETE t
                 FROM tarefa t
-                INNER JOIN lista_tarefa lt ON t.id = lt.id_tarefa
-                INNER JOIN lista l ON lt.id_lista = l.id
-                WHERE t.id = ? AND l.id_usuario = ?
+                WHERE t.id = ?
             ");
-            $stmt->execute([$id_task, $id_user]);
+
+            $stmt->execute([$id_task]);
             
             $conn->commit();
             return $stmt->rowCount();
@@ -128,7 +158,7 @@ class TaskRepository
             ");
             $stmt->execute([$id_task, $id_user]);
             $task = $stmt->fetch();
-            
+
             if ($task && $task['dt_final']) {
                 $dt_inicio = new DateTime($task['dt_inicio']);
                 $dt_final = new DateTime($task['dt_final']);
@@ -141,7 +171,7 @@ class TaskRepository
                     WHERE id = ?
                 ");
                 $updateStmt->execute([$durationInMinutes, $id_task]);
-                
+
                 $conn->commit();
                 return $durationInMinutes;
             } else {

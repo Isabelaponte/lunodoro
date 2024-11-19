@@ -49,20 +49,20 @@ class TaskService
     public static function getAllTasksByList(int $id_taskList, int $id_user)
     {
         $errors = validateIDs($id_taskList, $id_user);
-    
+
         if (!empty($errors)) {
             return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
         }
-    
+
         $response = TaskRepository::findAllTasksFromDatabase($id_user, $id_taskList);
-    
+
         return [
             "status" => "success",
             "data" => $response ?: []
         ];
     }
-    
-    
+
+
     public static function updateTask(Task $task, $id_user)
     {
         $errors = validateIDs($task->getId(), $id_user);
@@ -96,17 +96,57 @@ class TaskService
             $task->getId(),
             $task->getName(),
             $task->getDescription(),
-            $task->getEndDate(),
             $task->getStatus()
         );
 
         if (!$response) {
-            throw new RuntimeException("Erro ao atualizar a tarea. Tente novamente mais tarde.");
+            throw new RuntimeException("Erro ao atualizar a tarefa. Tente novamente mais tarde.");
         }
 
         return [
             "status" => "success",
             "data" => self::formatTaskData($task)
+        ];
+    }
+
+    public static function finalizeTask(Task $task, $id_user)
+    {
+        $errors = validateIDs($task->getId(), $id_user);
+
+        if (!empty($errors)) {
+            return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
+        }
+
+        $errors = TaskValidator::validateStatus(
+            $task->getStatus()
+        );
+
+        if (!empty($errors)) {
+            return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
+        }
+
+        $existingTask = TaskRepository::findTaskFromDatabase($id_user, $task->getId());
+
+        if (!$existingTask) {
+            output(404, ["error" => "Tarefa não encontrada"]);
+        }
+
+        $response = TaskRepository::finalizeTask(
+            $id_user,
+            $task->getId(),
+            $task->getStatus()
+        );
+
+        if (!$response) {
+            throw new RuntimeException("Erro ao atualizar a tarefa. Tente novamente mais tarde.");
+        }
+
+        return [
+            "status" => "success",
+            "data" => [
+                "id" => $task->getId(),
+                "status" => $task->getStatus()
+            ]
         ];
     }
 
@@ -118,7 +158,7 @@ class TaskService
             return new InvalidArgumentException("Parâmetros inválidos: " . implode(", ", $errors));
         }
 
-        $response = TaskRepository::removeTask( $id_user, $task_id);
+        $response = TaskRepository::removeTask($id_user, $task_id);
 
         if (!$response) {
             throw new RuntimeException("Erro ao remover a tarefa. Tente novamente mais tarde.");

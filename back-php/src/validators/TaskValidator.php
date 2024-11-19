@@ -22,10 +22,17 @@ class TaskValidator
 
         return $errors;
     }
-
-    private static function validateDate($date)
+    public static function validateStatus($status)
     {
-        $d = DateTime::createFromFormat('Y-m-d H:i:s', $date);
-        return $d && $d->format('Y-m-d H:i:s') === $date;
+        $errors = [];
+
+        $validStatuses = ['em processo', 'concluida', 'lista vazia'];
+        if (!in_array($status, $validStatuses)) {
+            $errors[] = "O status deve ser um dos seguintes: " . implode(', ', $validStatuses) . ".";
+        }
+
+
+        return $errors;
     }
+
 }

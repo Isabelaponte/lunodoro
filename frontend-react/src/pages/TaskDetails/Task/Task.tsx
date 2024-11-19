@@ -12,10 +12,12 @@ import {
   StyledButtonSecondary,
 } from "../../../components/CardTask/CardTask.styles";
 import useAuthStore from "../../../store/useAuthStore";
+import { Severety, useNotificationStore } from "../../../store/useNotification";
 
 const Task = ({ task }: { task: any }) => {
   const [expanded, setExpanded] = useState<string | false>(false);
   const { user } = useAuthStore.getState();
+  const notify = useNotificationStore((state) => state.notify);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -30,15 +32,53 @@ const Task = ({ task }: { task: any }) => {
           method: "DELETE",
         }
       );
+      if (!response.ok) {
+        notify({
+          message: "Erro ao excluir tarefa: " + response.statusText,
+          severety: Severety.ERROR,
+        });
+      } else {
+        notify({
+          message: "Tarefa excluída com sucesso!",
+          severety: Severety.SUCCESS,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   const onCompleteTask = async (id: string) => {
-    console.log('aiai');
-  }
-
+    try {
+      const response = await fetch(
+        `http://localhost/luno/lunodoro/usuarios/tarefas?id_user=${user?.id}&id_task=${id}&status=true`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            id_user: user?.id.toString() || "",
+            id_task: id.toString() || "",
+            status: 'true',
+          }),
+        }
+      );
+      if (!response.ok) {
+        notify({
+          message: "Erro ao concluir tarefa: " + response.statusText,
+          severety: Severety.ERROR,
+        });
+      } else {
+        notify({
+          message: "Tarefa concluída com sucesso!",
+          severety: Severety.SUCCESS,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Accordion
       expanded={expanded === task.id}
@@ -66,7 +106,7 @@ const Task = ({ task }: { task: any }) => {
         <Typography>
           <strong>Status:</strong> {task.status || "Não definido"}
         </Typography>
-        {task.status !== "Concluída" && (
+        {task.status !== "concluída" && (
           <>
             <StyledButton onClick={() => onCompleteTask(task.id)}>
               Concluir
